@@ -14,7 +14,8 @@
   :license "Artistic"
   :author "Nicolas Hafner <shinmera@tymoon.eu>"
   :maintainer "Nicolas Hafner <shinmera@tymoon.eu>"
-  :description "A collection of utilities to ratify and validate inputs."
+  :description "A collection of utilities to ratify, validate and parse inputs."
+  :homepage "https://github.com/Shinmera/ratify"
   :serial T
   :components ((:file "package")
                (:file "toolkit")
