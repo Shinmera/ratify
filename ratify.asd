@@ -20,9 +20,11 @@
   :components ((:file "package")
                (:file "toolkit")
                (:file "testing")
+               (:file "parsing")
                (:file "uri")
                (:file "url")
                (:file "email")
                (:file "date")
                (:file "types"))
-  :depends-on (:cl-ppcre))
+  :depends-on (:cl-ppcre
+               :parse-float))

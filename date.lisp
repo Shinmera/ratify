@@ -18,12 +18,18 @@
         unless (char<= #\0 char #\9)
           do (ratification-error year "Character ~a is not a digit." char)))
 
+(define-parser year (year)
+  (parse-integer year))
+
 (define-test month (month)
   (let ((month (ignore-errors (parse-integer month))))
     (unless month
       (ratification-error month "Month must be an integer."))
     (unless (<= 1 month 12)
       (ratification-error month "Month must be an integer between 1 and 12."))))
+
+(define-parser month (month)
+  (parse-integer month))
 
 (define-test day (day)
   (let ((day (ignore-errors (parse-integer day))))
@@ -32,12 +38,18 @@
     (unless (<= 1 day 31)
       (ratification-error day "Day must be an integer between 1 and 31."))))
 
+(define-parser day (day)
+  (parse-integer day))
+
 (define-test hour (hour)
   (let ((hour (ignore-errors (parse-integer hour))))
     (unless hour
       (ratification-error hour "Hour must be an integer."))
     (unless (<= 0 hour 23)
       (ratification-error hour "Hour must be an integer between 0 and 23."))))
+
+(define-parser hour (hour)
+  (parse-integer hour))
 
 (define-test minute (minute)
   (let ((minute (ignore-errors (parse-integer minute))))
@@ -46,12 +58,18 @@
     (unless (<= 0 minute 59)
       (ratification-error minute "Minute must be an integer between 0 and 59."))))
 
+(define-parser minute (minute)
+  (parse-integer minute))
+
 (define-test second (second)
   (let ((second (ignore-errors (parse-integer second))))
     (unless second
       (ratification-error second "Second must be an integer."))
     (unless (<= 0 second 59)
       (ratification-error second "Second must be an integer between 0 and 59."))))
+
+(define-parser second (second)
+  (parse-integer second))
 
 (define-test offset (offset)
   (when (= 0 (length offset))
@@ -64,6 +82,13 @@
         (test-minute minute))
       (ratification-error offset "Offset must specify hours and minutes.")))
 
+(define-parser offset (offset)
+  (cl-ppcre:register-groups-bind (dir hour minute) ("^([-+])([^:]+):([^:]+)$" offset)
+    (list
+     dir
+     (parse-integer (or hour ""))
+     (parse-integer (or minute "")))))
+
 (define-test time (time)
   (or (cl-ppcre:register-groups-bind (hour minute second NIL offset) ("^([^:]+):([^:]+):([^Zz]+)([Zz](.+))?$" time)
         (when offset
@@ -71,7 +96,10 @@
         (test-hour hour)
         (test-minute minute)
         (test-second second))
-   (ratification-error time "Time must be made up of hour:minute:second followed by an optional offset: Z+hours:minutes .")))
+      (ratification-error time "Time must be made up of hour:minute:second followed by an optional offset: Z+hours:minutes .")))
+
+(define-parser time (time)
+  (local-time:parse-timestring time :allow-missing-date-part T :allow-missing-time-part NIL :allow-missing-timezone-part T))
 
 (define-test date (date)
   (let ((parts (cl-ppcre:split "-" date)))
@@ -82,10 +110,16 @@
       (test-month month)
       (test-day day))))
 
+(define-parser date (date)
+  (local-time:parse-timestring date :allow-missing-date-part NIL :allow-missing-time-part T :allow-missing-timezone-part T))
+
 (define-test datetime (datetime)
-  (let ((parts (cl-ppcre:split "[tT]" datetime)))
+  (let ((parts (cl-ppcre:split "T" datetime)))
     (unless (<= 1 (length parts) 2)
       (ratification-error datetime "Datetime must specify at least the date and at most date and time separated by T."))
     (test-date (first parts))
     (when (second parts)
       (test-time (second parts)))))
+
+(define-parser datetime (datetime)
+  (local-time:parse-timestring datetime :allow-missing-date-part NIL :allow-missing-time-part NIL :allow-missing-timezone-part T))

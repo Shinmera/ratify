@@ -15,13 +15,14 @@
 
 (define-condition combined-error (error)
   ((errors :initarg :errors :initform () :accessor errors))
-  (:report (lambda (c s) (format s "~:[No errors occurred.~;~:*Errors occurred: ~{~a~^~%~}~]"
+  (:report (lambda (c s) (format s "~:[No errors occurred.~;~:*Errors occurred: ~{~%> ~a~}~]"
                                  (errors c)))))
 
 (defvar *tests* (make-hash-table))
 
 (defun test (name)
-  (gethash (make-keyword name) *tests*))
+  (or (gethash (make-keyword name) *tests*)
+      (error "No such test ~s." name)))
 
 (defun (setf test) (function name)
   (setf (gethash (make-keyword name) *tests*) function))
@@ -35,8 +36,8 @@
                (let ((,param ,param))
                  ,@body)
                ,param))
-       ;; This is going to break on any lambda-vars, but I don't care right now.
        (defun ,pred-name (,param)
+         ,(format NIL "Predicate version of ~a, returns the passed value on success, NIL on error." func-name)
          (ignore-errors 
           (,func-name ,param))))))
 
