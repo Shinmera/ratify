@@ -109,7 +109,7 @@ as per PROGN."
 Automatically establishes a SKIP-ERROR restart and resignals any error
 as a new error of type TEST-FAILED."
   (with-skipping
-    (test-no-skip test-name test-object)))
+    (perform-test-no-skip test-name test-object)))
 
 (defmacro perform-tests (&body test-forms)
   "Performs a series of tests.
