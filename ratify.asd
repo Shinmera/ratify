@@ -27,4 +27,5 @@
                (:file "date")
                (:file "types"))
   :depends-on (:cl-ppcre
+               :local-time
                :parse-float))
