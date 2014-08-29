@@ -47,7 +47,7 @@ Performs exactly two operations:
 1) Call the test function of name PARSER-NAME on the object
 2) Call the parse function of name PARSER-NAME on the object"
   (with-skipping
-    (funcall (test parser-name) object)
+    (ratify-testing::perform-test-no-skip parser-name object)
     (funcall (parser parser-name) object)))
 
 (defmacro with-parsed-forms (parse-forms &body body)

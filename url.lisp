@@ -9,7 +9,7 @@
 (define-test hostname (hostname)
   "Test a hostname for validity according to http://en.wikipedia.org/wiki/Hostname
 
-[a-zA-Z0-9-]{1,63}(\.[a-zA-Z0-9-]{1,63})*
+[a-zA-Z0-9-]{1,63}(\\.[a-zA-Z0-9-]{1,63})*
 1<=length<=255"
   (unless (<= 1 (length hostname) 255)
     (ratification-error hostname "Hostname must be between 1 and 255 characters long."))
@@ -45,9 +45,9 @@
 (define-test url (url)
   "Tests for a valid URL.
 
- (<protocol>:)?(<domain>)?<absolute-path>(\?<query>)?(#<fragment>)?"
+ (<protocol>://)?(<domain>)?<absolute-path>(\?<query>)?(#<fragment>)?"
   (or
-   (cl-ppcre:register-groups-bind (NIL protocol domain path NIL query NIL fragment) ("^(([^:]+):)?([^/]+)?(/[^\\?]+)(\\?([^#]*))?(\\#(.*))?$" url)
+   (cl-ppcre:register-groups-bind (NIL protocol domain path NIL query NIL fragment) ("^(([^:]+)://)?([^/]+)?(/[^\\?]+)(\\?([^#]*))?(\\#(.*))?$" url)
      (when protocol (test-protocol protocol))
      (when domain (test-domain domain))
      (when path (test-absolute-path path))

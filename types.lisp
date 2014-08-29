@@ -75,7 +75,7 @@
 (define-test float (float)
   "Tests for a valid float.
 
-[+-]?<unsigned-integer>(.<unsigned-integer>)?(e<unsigned-integer>)?"
+[+-]?<unsigned-integer>(\\.<unsigned-integer>)?(e<unsigned-integer>)?"
   (or (cl-ppcre:register-groups-bind (base NIL fraction NIL exponent) ("^[+-]?(.+?)(\\.(.+))?(e(.+))?$" float)
         (when fraction
           (test-unsigned-integer fraction))

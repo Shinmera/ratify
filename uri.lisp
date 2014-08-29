@@ -36,7 +36,7 @@
 (define-test ipv4 (ip)
   "Tests for a valid IPv4
 
-<unsigned-integer>\.<unsigned-integer>\.<unsigned-integer>\.<unsigned-integer>
+<unsigned-integer>\\.<unsigned-integer>\\.<unsigned-integer>\\.<unsigned-integer>
 0<=unsigned-integer<=255"
   (let ((parts (cl-ppcre:split "\\." ip :limit 5)))
     (unless (= (length parts) 4)
@@ -106,7 +106,7 @@
 [a-zA-Z0-9%!$&'()*+,;=-._~:]+"
   (when (= 0 (length user))
     (ratification-error user "User must be at least one character long."))
-  (loop for char in user
+  (loop for char across user
         unless (or (unreserved-character-p char)
                    (sub-delimiter-p char)
                    (percent-encoded-p char)
@@ -144,7 +144,7 @@
 [a-zA-Z0-9!$&'()*+,;=-._~:@]+"
   (when (= 0 (length path))
     (ratification-error path "Path must be at least one character long."))
-  (loop for char in path
+  (loop for char across path
         unless (pchar-p char)
           do (ratification-error path "Invalid character ~a. Path can only contain alphanumerics or ! $ & ' ( ) * + , ; = - . _ ~~ : @"))) ;
 
@@ -170,10 +170,10 @@
       (ratification-error hierarchical "Hierarchical part must be either a path or begin with //."))
     (when (and (< 1 (length hierarchical))
                (string= "//" hierarchical :end2 2))
-      (let ((slashpos (position #\/ hierarchical)))
+      (let ((slashpos (position #\/ hierarchical :start 2)))
         (if slashpos
-            (progn (test-authority (subseq hierarchical 0 slashpos))
-                   (test-absolute-path (subseq hierarchical slashpos)))
+            (progn (test-authority (subseq hierarchical 2 slashpos))
+                   (setf hierarchical (subseq hierarchical slashpos)))
             (test-authority hierarchical))))
     (test-absolute-path hierarchical)))
 
@@ -183,7 +183,7 @@
 [a-zA-Z0-9!$&'()*+,;=-._~:@?/]+"
   (unless (< 0 (length query))
     (ratification-error query "Query must be at least one character long."))
-  (loop for char in query
+  (loop for char across query
         unless (or (pchar-p char)
                    (find char "?/" :test #'char=))
           do (ratification-error query "Invalid character ~a. Query can only contain alphanumercs or ! $ & ' ( ) * + , ; = - . _ ~~ : @ ? /")))
@@ -194,7 +194,7 @@
 [a-zA-Z0-9!$&'()*+,;=-._~:@?/]+"
   (unless (< 0 (length fragment))
     (ratification-error fragment "Fragment must be at least one character long."))
-  (loop for char in fragment
+  (loop for char across fragment
         unless (or (pchar-p char)
                    (find char "?/" :test #'char=))
           do (ratification-error fragment "Invalid character ~a. Fragment can only contain alphanumercs or ! $ & ' ( ) * + , ; = - . _ ~~ : @ ? /")))

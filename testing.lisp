@@ -98,28 +98,32 @@ as per PROGN."
          (when (errors ,combined-error)
            (error ,combined-error))))))
 
+(defun perform-test-no-skip (test-name test-object)
+  (handler-bind ((error #'(lambda (err)
+                            (error 'test-failed :cause err :test-object test-object :test-name test-name))))
+    (funcall (test test-name) test-object)))
+
 (defun perform-test (test-name test-object)
   "Performs the test named by TEST-NAME on TEST-OBJECT.
 
 Automatically establishes a SKIP-ERROR restart and resignals any error
 as a new error of type TEST-FAILED."
   (with-skipping
-    (handler-bind ((error #'(lambda (err)
-                              (error 'test-failed :cause err :test-object test-object :test-name test-name))))
-      (funcall (test test-name) test-object))))
+    (test-no-skip test-name test-object)))
 
 (defmacro perform-tests (&body test-forms)
   "Performs a series of tests.
 
 TEST-FORMS ::= TEST-FORM*
 TEST-FORM  ::= (test-name test-object*)
-See PERFORM-TEST."
+See TEST."
   `(progn
      ,@(loop with forms = ()
              for (test . objects) in test-forms
              do (dolist (object objects)
                   (push `(perform-test ,(make-keyword test) ,object) forms))
-             finally (return (nreverse forms)))))
+             finally (return (nreverse forms)))
+     T))
 
 (defmacro perform-combined-tests (&body test-forms)
   "Same as PERFORM-TESTS, except with WITH-ERRORS-COMBINED in effect."
