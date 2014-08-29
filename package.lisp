@@ -31,6 +31,7 @@
    #:test
    #:define-test
    #:with-skipping
+   #:skip-error
    #:skippable-error
    #:with-errors-combined
    #:perform-test

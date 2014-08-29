@@ -13,6 +13,9 @@
           (subseq email (1+ atpos)))))
 
 (define-test local-part (local-part)
+  "Tests for a valid email local-part.
+
+[!#$%&'*+-/=?^_`{|}~a-zA-Z0-9][!#$%&'*+-/=?^_`{|}~.a-zA-Z0-9]{0,63}"
   (let ((length (length local-part)))
     (unless (<= 1 length 64)
       (ratification-error local-part "Local-part of an email must be between 1 and 64 characters long."))
@@ -35,7 +38,9 @@
                                    char))))
 
 (define-test email (email)
-  "Test an e-mail address for validity according to http://en.wikipedia.org/wiki/Email_address#Syntax"
+  "Test an e-mail address for validity according to http://en.wikipedia.org/wiki/Email_address#Syntax
+
+<local-part>@<domain>"
   (let ((split (split-email email)))
     (test-local-part (car split))
     (test-domain (cdr split))))
