@@ -26,7 +26,8 @@
                (:file "email")
                (:file "css")
                (:file "date")
-               (:file "types"))
+               (:file "types")
+               (:file "html"))
   :depends-on (:cl-ppcre
                :local-time
                :parse-float))

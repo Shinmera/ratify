@@ -192,12 +192,36 @@
    #:numeric-p
    #:alphanumeric-p))
 
+(defpackage #:ratify-html
+  (:nicknames #:org.tymoonnext.ratify.html)
+  (:use #:cl #:ratify-toolkit #:ratify-testing #:ratify-url #:ratify-email #:ratify-date #:ratify-css #:ratify-types)
+  (:export
+   #:checkbox
+   #:color
+   #:date
+   #:datetime
+   #:datetime-local
+   #:email
+   #:file
+   #:month
+   #:number
+   #:password
+   #:radio
+   #:range
+   #:search
+   #:tel
+   #:text
+   #:textarea
+   #:time
+   #:url
+   #:week))
+
 (defpackage #:ratify
   (:nicknames #:org.tymoonnext.ratify)
   (:use #:cl))
 
 (let ((ratify (find-package '#:ratify)))
-  (dolist (symb '(#:ratify-toolkit #:ratify-testing #:ratify-parsing #:ratify-email #:ratify-css #:ratify-uri #:ratify-url #:ratify-date #:ratify-types))
+  (dolist (symb '(#:ratify-toolkit #:ratify-testing #:ratify-parsing #:ratify-email #:ratify-css #:ratify-uri #:ratify-url #:ratify-date #:ratify-types #:ratify-html))
     (do-external-symbols (symb (find-package symb))
       (import symb ratify)
       (export symb ratify))))
