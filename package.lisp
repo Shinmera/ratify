@@ -101,6 +101,15 @@
    #:test-email
    #:email-p))
 
+(defpackage #:ratify-css
+  (:nicknames #:org.tymoonnext.ratify.css)
+  (:use #:cl #:ratify-toolkit #:ratify-testing)
+  (:export
+   #:test-color
+   #:test-property
+   #:color-p
+   #:property-p))
+
 (defpackage #:ratify-date
   (:nicknames #:org.tymoonnext.ratify.date #:org.tymoonnext.ratify.time #:ratify-time)
   (:use #:cl #:ratify-toolkit #:ratify-testing #:ratify-parsing)
@@ -188,7 +197,7 @@
   (:use #:cl))
 
 (let ((ratify (find-package '#:ratify)))
-  (dolist (symb '(#:ratify-toolkit #:ratify-testing #:ratify-parsing #:ratify-email #:ratify-uri #:ratify-url #:ratify-date #:ratify-types))
+  (dolist (symb '(#:ratify-toolkit #:ratify-testing #:ratify-parsing #:ratify-email #:ratify-css #:ratify-uri #:ratify-url #:ratify-date #:ratify-types))
     (do-external-symbols (symb (find-package symb))
       (import symb ratify)
       (export symb ratify))))

@@ -24,6 +24,7 @@
                (:file "uri")
                (:file "url")
                (:file "email")
+               (:file "css")
                (:file "date")
                (:file "types"))
   :depends-on (:cl-ppcre
