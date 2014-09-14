@@ -84,7 +84,7 @@
                (#\( (incf in-paren))
                (#\) (decf in-paren))
                (#\" (setf in-string (not in-string)))
-               (T (when (and (not in-string) (find char "{}[];:/*\\"))
+               (T (when (and (not in-string) (= in-paren 0) (find char "{}[];:/*\\"))
                     (ratification-error property "Character ~a is not allowed outside of strings." char)))))
         finally (when (or in-string (/= in-paren 0))
                   (ratification-error property "Property ~s contains unbalanced delimiters." property))))
