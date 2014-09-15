@@ -240,7 +240,7 @@
   (:use #:cl))
 
 (let ((ratify (find-package '#:ratify)))
-  (dolist (symb '(#:ratify-toolkit #:ratify-testing #:ratify-parsing #:ratify-email #:ratify-css #:ratify-uri #:ratify-url #:ratify-date #:ratify-types #:ratify-html))
-    (do-external-symbols (symb (find-package symb))
+  (dolist (pkg '(#:ratify-toolkit #:ratify-testing #:ratify-parsing #:ratify-email #:ratify-css #:ratify-uri #:ratify-url #:ratify-date #:ratify-types #:ratify-html))
+    (do-external-symbols (symb (find-package pkg))
       (import symb ratify)
       (export symb ratify))))
