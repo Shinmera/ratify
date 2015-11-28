@@ -42,10 +42,10 @@ SETF-able."
 The name is converted to a keyword."
   (setf (gethash (make-keyword name) *tests*) function))
 
-(defmacro define-test (name (param) &body body)
+(defmacro define-test (name (param start end) &body body)
   "Defines a new test function with NAME.
-PARAM will be bound to the object to test, which is a string otherwise
-specified.
+PARAM will be bound to the object to test, which is a string unless otherwise
+specified, START to the starting index (inc) and END to the ending index (exc).
 
 This function creates two other functions automatically:
 TEST-name This is the main test function. If the test fails, an error of
@@ -57,16 +57,17 @@ name-P    Equivalent to the TEST- function, except that it simply returns
         (pred-name (intern (format NIL "~a-P" name))))
     `(progn
        (setf (test ,(string name))
-             (defun ,func-name (,param)
+             (defun ,func-name (,param &optional (,start 0) (,end (length ,param)))
+               (declare (ignorable ,start ,end))
                ,@(when (stringp (car body))
                    (list (pop body)))
                (let ((,param ,param))
                  ,@body)
                ,param))
-       (defun ,pred-name (,param)
+       (defun ,pred-name (,param &optional (,start 0) (,end (length ,param)))
          ,(format NIL "Predicate version of ~a, returns the passed value on success, NIL on error." func-name)
          (ignore-errors 
-          (,func-name ,param))))))
+          (,func-name ,param ,start ,end))))))
 
 (defmacro with-skipping (&body body)
   "Marks the body as being skippable if an error occurs within.

@@ -8,12 +8,12 @@
 
 (defvar *css-color-names* '(AliceBlue AntiqueWhite Aqua Aquamarine Azure Beige Bisque Black BlanchedAlmond Blue BlueViolet Brown BurlyWood CadetBlue Chartreuse Chocolate Coral CornflowerBlue Cornsilk Crimson Cyan DarkBlue DarkCyan DarkGoldenrod DarkGray DarkGreen DarkKhaki DarkMagenta DarkOliveGreen DarkOrange DarkOrchid DarkRed DarkSalmon DarkSeaGreen DarkSlateBlue DarkSlateGray DarkTurquoise DarkViolet DeepPink DeepSkyBlue DimGray DodgerBlue FireBrick FloralWhite ForestGreen Fuchsia Gainsboro GhostWhite Gold Goldenrod Gray Green GreenYellow Honeydew HotPink IndianRed Indigo Ivory Khaki Lavender LavenderBlush LawnGreen LemonChiffon LightBlue LightCoral LightCyan LightGoldenrodYellow LightGreen LightGrey LightPink LightSalmon LightSeaGreen LightSkyBlue LightSlateGray LightSteelBlue LightYellow Lime LimeGreen Linen Magenta Maroon MediumAquamarine MediumBlue MediumOrchid MediumPurple MediumSeaGreen MediumSlateBlue MediumSpringGreen MediumTurquoise MediumVioletRed MidnightBlue MintCream MistyRose Moccasin NavajoWhite Navy OldLace Olive OliveDrab Orange OrangeRed Orchid PaleGoldenrod PaleGreen PaleTurquoise PaleVioletRed PapayaWhip PeachPuff Peru Pink Plum PowderBlue Purple Red RosyBrown RoyalBlue SaddleBrown Salmon SandyBrown SeaGreen Seashell Sienna Silver SkyBlue SlateBlue SlateGray Snow SpringGreen SteelBlue Tan Teal Thistle Tomato Turquoise Violet Wheat White WhiteSmoke Yellow YellowGreen))
 
-(defun css-argslist (argslist)
-  (unless (and (<= 2 (length argslist))
-               (char= (aref argslist 0) #\()
-               (char= (aref argslist (1- (length argslist))) #\)))
+(defun css-argslist (argslist start end)
+  (unless (and (<= 2 (- end start))
+               (char= (aref argslist start) #\()
+               (char= (aref argslist (1- end)) #\)))
     (ratification-error argslist "Invalid arguments list."))
-  (cl-ppcre:split "\\s*,\\s*" (subseq argslist 1 (1- (length argslist)))))
+  (cl-ppcre:split "\\s*,\\s*" (subseq argslist (1+ start) (1- end))))
 
 (defun test-rgb (vals)
   (loop for val in vals
@@ -33,31 +33,31 @@
     (test-percentage s)
     (test-percentage l)))
 
-(define-test color (color)
-  (unless (<= 4 (length color))
+(define-test color (color start end)
+  (unless (<= 4 (- end start))
     (ratification-error color "Color must be at least four characters long."))
-  (cond ((string= color "#" :end1 1)
+  (cond ((string= color "#" :start1 start :end1 (1+ start))
          (unless (or (= 4 (length color))
                      (= 7 (length color)))
            (ratification-error color "A HEX colour must be either 3 or 6 ciphers."))
-         (parse-integer color :radix 16 :start 1))
+         (parse-integer color :radix 16 :start (1+ start) :end end))
         
-        ((string= color "rgba" :end1 4)
-         (let ((args (css-argslist (subseq color 4))))
+        ((string= color "rgba" :start1 start :end1 (+ start 4))
+         (let ((args (css-argslist color (+ start 4) end)))
            (unless (= 4 (length args))
              (ratification-error color "RGBA requires 4 arguments."))
            (test-rgb (subseq args 0 3))
            (unless (<= 0 (parse-float:parse-float (fourth args)) 1)
              (ratification-error color "Alpha value must be between 0.0 and 1.0"))))
         
-        ((string= color "rgb" :end1 3)
-         (let ((args (css-argslist (subseq color 3))))
+        ((string= color "rgb" :start1 start :end1 (+ start 3))
+         (let ((args (css-argslist color (+ start 3) end)))
            (unless (= 3 (length args))
              (ratification-error color "RGB requires 3 arguments."))
            (test-rgb args)))
         
         ((string= color "hsla" :end1 4)
-         (let ((args (css-argslist (subseq color 4))))
+         (let ((args (css-argslist color (+ start 4) end)))
            (unless (= 4 (length args))
              (ratification-error color "RGBA requires 4 arguments."))
            (test-hsl (subseq args 0 3))
@@ -65,7 +65,7 @@
              (ratification-error color "Alpha value must be between 0.0 and 1.0"))))
         
         ((string= color "hsl" :end1 3)
-         (let ((args (css-argslist (subseq color 3))))
+         (let ((args (css-argslist color (+ start 3) end)))
            (unless (= 3 (length args))
              (ratification-error color "RGB requires 3 arguments."))
            (test-hsl args)))
@@ -74,11 +74,12 @@
          (unless (find color *css-color-names* :test #'string-equal)
            (ratification-error color "Color ~s is not a known colour name or scheme." color)))))
 
-(define-test property (property)
+(define-test property (property start end)
   (loop with in-paren = 0
         with in-string = NIL
         for prev = #\Space then char
-        for char across property
+        for i from start below end
+        for char = (char property i)
         do (unless (char= #\\ prev)
              (case char
                (#\( (incf in-paren))

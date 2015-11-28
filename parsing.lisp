@@ -24,10 +24,10 @@ SETF-able."
 The name is converted to a keyword."
   (setf (gethash (make-keyword name) *parsers*) function))
 
-(defmacro define-parser (name (param) &body body)
+(defmacro define-parser (name (param start end) &body body)
   "Defines a new parse function with NAME.
 PARAM will be bound to the object to parse, which is a string unless otherwise
-specified.
+specified, START to the starting index (inc) and END to the ending index (exc).
 
 This function creates two other functions automatically:
 PARSE-name This is the main test function. If the test fails, an error of
@@ -36,7 +36,8 @@ PARSE-name This is the main test function. If the test fails, an error of
   (let ((func-name (intern (format NIL "PARSE-~a" name))))
     `(setf
       (parser ,(string name))
-      (defun ,func-name (,param)
+      (defun ,func-name (,param &optional (,start 0) (,end (length ,param)))
+        (declare (ignorable ,start ,end))
         ,@body))))
 
 (defun parse (parser-name object)
