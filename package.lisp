@@ -59,6 +59,7 @@
    #:test-user
    #:test-port
    #:test-authority
+   #:test-path-segment
    #:test-rootless-path
    #:test-absolute-path
    #:test-hierarchical-part
@@ -73,6 +74,7 @@
    #:user-p
    #:port-p
    #:authority-p
+   #:path-segment-p
    #:rootless-path-p
    #:absolute-path-p
    #:hierarchical-part-p
