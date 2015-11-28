@@ -46,11 +46,11 @@
   "Tests for a valid URL.
 
  (<protocol>://)?(<domain>)?<absolute-path>(\?<query>)?(#<fragment>)?"
-  (or
-   (cl-ppcre:register-groups-bind (NIL protocol domain path NIL query NIL fragment) ("^(([^:]+)://)?([^/]+)?(/[^\\?]+)(\\?([^#]*))?(\\#(.*))?$" url)
-     (when protocol (test-protocol protocol))
-     (when domain (test-domain domain))
-     (when path (test-absolute-path path))
-     (when query (test-query query))
-     (when fragment (test-fragment fragment)))
-   (ratification-error url "an URL must at the very least consist of a path.")))
+  (cl-ppcre:register-groups-bind (NIL protocol domain path NIL query NIL fragment) ("^(([^:]+)://)?([^/]+)?(/[^\\?]+)(\\?([^#]*))?(\\#(.*))?$" url)
+    (when protocol (test-protocol protocol))
+    (when domain (test-domain domain))
+    (when path (test-absolute-path path))
+    (when query (test-query query))
+    (when fragment (test-fragment fragment))
+    (unless path ;; With "http://www.google.com" above regex considers "http" as domain and "//www.google.com" as path
+      (ratification-error url "An URL must at the very least consist of a path."))))

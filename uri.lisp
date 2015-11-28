@@ -29,7 +29,7 @@
 
 (defun pchar-p (char)
   (or (unreserved-character-p char)
-      (sub-delimiter-p char)
+      (reserved-character-p char)
       (percent-encoded-p char)
       (find char ":@" :test #'char=)))
 
@@ -146,7 +146,7 @@
     (ratification-error path "Path must be at least one character long."))
   (loop for char across path
         unless (pchar-p char)
-          do (ratification-error path "Invalid character ~a. Path can only contain alphanumerics or ! $ & ' ( ) * + , ; = - . _ ~~ : @"))) ;
+          do (ratification-error path "Invalid character ~a. Path can only contain alphanumerics or ! $ & ' ( ) * + , ; = - . _ ~~ : @" char))) ;
 
 (define-test absolute-path (path)
   "Tests for a valid absolute path.
