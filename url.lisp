@@ -47,10 +47,12 @@
 
  (<protocol>://)?(<domain>)?<absolute-path>(\?<query>)?(#<fragment>)?"
   (or
-   (cl-ppcre:register-groups-bind (NIL protocol domain path NIL query NIL fragment) ("^(([^:]+)://)?([^/]+)?(/[^\\?]+)(\\?([^#]*))?(\\#(.*))?$" url)
+   (cl-ppcre:register-groups-bind (NIL protocol domain path NIL query NIL fragment) ("^(([^:]+):\\/\\/)?([^/]+)?(\\/[^\\?]*)(\\?([^#]*))?(#(.*))?$" url)
+     (format T "~a ~a ~a ~a ~a" protocol domain path query fragment)
      (when protocol (test-protocol protocol))
      (when domain (test-domain domain))
      (when path (test-absolute-path path))
      (when query (test-query query))
-     (when fragment (test-fragment fragment)))
-   (ratification-error url "an URL must at the very least consist of a path.")))
+     (when fragment (test-fragment fragment))
+     T)
+   (ratification-error url "An URL must at the very least consist of a path.")))
