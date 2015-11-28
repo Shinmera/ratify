@@ -43,8 +43,8 @@
       (ratification-error ip "IPv4 addresses must consist of four parts."))
     (loop for part in parts
           for num = (ignore-errors (parse-integer part))
-          unless (and num (<= 0 num 255))
-            do (ratification-error ip "~s is not a decimal integer between 0 and 255." part))))
+          do (unless (and num (<= 0 num 255))
+               (ratification-error ip "~s is not a decimal integer between 0 and 255." part)))))
 
 (define-test ipv6 (ip start end)
   "Tests for a valid IPv6
@@ -57,8 +57,8 @@
     (loop for part in parts
           for num = (ignore-errors (parse-integer part :radix 16))
           for i from 0
-          unless (or (not num) (<= #x0000 num #xFFFF))
-            do (ratification-error ip "~s is not a hexadecimal integer between 0 and FFFF." part))))
+          do (unless (or (not num) (<= #x0000 num #xFFFF))
+               (ratification-error ip "~s is not a hexadecimal integer between 0 and FFFF." part)))))
 
 (define-test ip (ip start end)
   "Tests for a valid IP address.
@@ -81,10 +81,10 @@
     (test-ip host (1+ start) (- end 2)))
   (loop for i from start below end
         for char = (char host i)
-        unless (or (unreserved-character-p char)
-                   (percent-encoded-p char)
-                   (sub-delimiter-p char))
-          do (ratification-error host "Invalid character ~a. Host can only contain alphanumerics or - . _ ~~ % ! $ & ' ( ) * + , ; =")))
+        do (unless (or (unreserved-character-p char)
+                       (percent-encoded-p char)
+                       (sub-delimiter-p char))
+             (ratification-error host "Invalid character ~a. Host can only contain alphanumerics or - . _ ~~ % ! $ & ' ( ) * + , ; =" char))))
 
 (define-test scheme (scheme start end)
   "Tests for a valid scheme.
@@ -96,9 +96,9 @@
     (ratification-error scheme "Scheme must start with an alphabetic character."))
   (loop for i from (1+ start) below end
         for char = (char scheme i)
-        unless (or (true-alphanumeric-p char)
-                   (find char "-.+" :test #'char=))
-          do (ratification-error scheme "Invalid character ~a. Scheme can only contain alphanumerics or - . +" char)))
+        do (unless (or (true-alphanumeric-p char)
+                       (find char "-.+" :test #'char=))
+             (ratification-error scheme "Invalid character ~a. Scheme can only contain alphanumerics or - . +" char))))
 
 (define-test user (user start end)
   "Tests for a valid user.
@@ -108,11 +108,11 @@
     (ratification-error user "User must be at least one character long."))
   (loop for i from start below end
         for char = (char user i)
-        unless (or (unreserved-character-p char)
-                   (sub-delimiter-p char)
-                   (percent-encoded-p char)
-                   (char= char #\:))
-          do (ratification-error user "Invalid character ~a. Username can only contain alphanumerics or % ! $ & ' ( ) * + , ; = - . _ ~~ :")))
+        do (unless (or (unreserved-character-p char)
+                       (sub-delimiter-p char)
+                       (percent-encoded-p char)
+                       (char= char #\:))
+             (ratification-error user "Invalid character ~a. Username can only contain alphanumerics or % ! $ & ' ( ) * + , ; = - . _ ~~ :" char))))
 
 (define-test port (port start end)
   "Tests for a valid port.
@@ -200,9 +200,9 @@
     (ratification-error query "Query must be at least one character long."))
   (loop for i from start below end
         for char = (char query i)
-        unless (or (pchar-p char)
-                   (find char "?/" :test #'char=))
-          do (ratification-error query "Invalid character ~a. Query can only contain alphanumercs or ! $ & ' ( ) * + , ; = - . _ ~~ : @ ? /")))
+        do (unless (or (pchar-p char)
+                       (find char "?/" :test #'char=))
+             (ratification-error query "Invalid character ~a. Query can only contain alphanumercs or ! $ & ' ( ) * + , ; = - . _ ~~ : @ ? /" char))))
 
 (define-test fragment (fragment start end)
   "Tests for a valid fragment part.
@@ -212,9 +212,9 @@
     (ratification-error fragment "Fragment must be at least one character long."))
   (loop for i from start below end
         for char = (char fragment i)
-        unless (or (pchar-p char)
-                   (find char "?/" :test #'char=))
-          do (ratification-error fragment "Invalid character ~a. Fragment can only contain alphanumercs or ! $ & ' ( ) * + , ; = - . _ ~~ : @ ? /")))
+        do (unless (or (pchar-p char)
+                       (find char "?/" :test #'char=))
+             (ratification-error fragment "Invalid character ~a. Fragment can only contain alphanumercs or ! $ & ' ( ) * + , ; = - . _ ~~ : @ ? /" char))))
 
 (define-test uri (uri start end)
   "Tests for a valid URI according to http://tools.ietf.org/html/rfc3986

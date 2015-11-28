@@ -177,8 +177,8 @@ Returns T if one of (\"1\" \"true\" \"T\"), NIL otherwise."
 [a-zA-Z]*"
   (loop for i from start below end
         for char = (char alpha i)
-        unless (true-alpha-p char)
-          do (ratification-error alpha "Invalid character ~a. Only alphabetic characters (a-z A-Z) are allowed." char)))
+        do (unless (true-alpha-p char)
+             (ratification-error alpha "Invalid character ~a. Only alphabetic characters (a-z A-Z) are allowed." char))))
 
 (define-test numeric (number start end)
   "Tests for a numeric string.
@@ -186,8 +186,8 @@ Returns T if one of (\"1\" \"true\" \"T\"), NIL otherwise."
 [0-9]*"
   (loop for i from start below end
         for char = (char number i)
-        unless (char<= #\0 char #\9)
-          do (ratification-error number "Invalid character ~a. Only numeric characters (0-9) are allowed." char)))
+        do (unless (char<= #\0 char #\9)
+             (ratification-error number "Invalid character ~a. Only numeric characters (0-9) are allowed." char))))
 
 (define-test alphanumeric (alpha start end)
   "Tests for an alphanumeric string.
@@ -195,5 +195,5 @@ Returns T if one of (\"1\" \"true\" \"T\"), NIL otherwise."
 [a-zA-Z0-9]*"
   (loop for i from start below end
         for char = (char alpha i)
-        unless (true-alphanumeric-p char)
-          do (ratification-error alpha "Invalid character ~a. Only alphanumeric characters (a-z A-Z 0-9) are allowed." char)))
+        do (unless (true-alphanumeric-p char)
+             (ratification-error alpha "Invalid character ~a. Only alphanumeric characters (a-z A-Z 0-9) are allowed." char))))

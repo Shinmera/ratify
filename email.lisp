@@ -22,19 +22,19 @@
           for char = (char local-part i)
           ;; Caveat: We hope the implementation uses ascii or unicode.
           ;; We cannot use alpha-char-p since depending on implementation characters like ü pass as well.
-          unless (or (true-alphanumeric-p char)
-                     ;; dot, but not at start or end
-                     (and (char= char #\.)
-                          (/= i start)
-                          (/= i (1- end)))
-                     ;; Special characters
-                     (find char "!#$%&'*+-/=?^_`{|}~" :test #'char=)
-                     #+(or sb-unicode unicode)
-                     (char> char #\Rubout))
-            do (ratification-error local-part
+          do (unless (or (true-alphanumeric-p char)
+                         ;; dot, but not at start or end
+                         (and (char= char #\.)
+                              (/= i start)
+                              (/= i (1- end)))
+                         ;; Special characters
+                         (find char "!#$%&'*+-/=?^_`{|}~" :test #'char=)
+                         #+(or sb-unicode unicode)
+                         (char> char #\Rubout))
+               (ratification-error local-part
                                    #+(or sb-unicode unicode) "~a is not a valid character. Permitted are a-z A-Z 0-9 . ! # $ % & ' * + - / = ? ^ _ ` { | } ~~ or unicode characters."
                                    #-(or sb-unicode unicode) "~a is not a valid character. Permitted are a-z A-Z 0-9 . ! # $ % & ' * + - / = ? ^ _ ` { | } ~~"
-                                   char))))
+                                   char)))))
 
 (define-test email (email start end)
   "Test an e-mail address for validity according to http://en.wikipedia.org/wiki/Email_address#Syntax

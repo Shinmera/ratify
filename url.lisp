@@ -16,13 +16,13 @@
   (loop with lastdot = start
         for i from start below end
         for char = (char hostname i)
-        unless (or (true-alphanumeric-p char)
-                   (find char "-." :test #'char=))
-          do (ratification-error hostname "Invalid character ~a. Hostname parts must consist of either alphanumerics or - ." char)
-        when (char= char #\.)
-          do (unless (<= 1 (- i lastdot) 63)
+        do (unless (or (true-alphanumeric-p char)
+                       (find char "-." :test #'char=))
+             (ratification-error hostname "Invalid character ~a. Hostname parts must consist of either alphanumerics or - ." char))
+           (when (char= char #\.)
+             (unless (<= 1 (- i lastdot) 63)
                (ratification-error hostname "Hostname parts must be between 1 and 63 characters long."))
-             (setf lastdot i)
+             (setf lastdot i))
         finally (unless (<= 1 (- i lastdot) 63)
                   (ratification-error hostname "Hostname parts must be between 1 and 63 characters long."))))
 
