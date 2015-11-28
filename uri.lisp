@@ -138,15 +138,27 @@
       (setf authority (subseq authority 0 colonpos))))
   (test-host authority))
 
+(define-test path-segment (segment)
+  "Tests for a valid path segment.
+
+[a-zA-Z0-9!$&'()*+,;=-._~:@]+"
+  (loop for char across segment
+        unless (pchar-p char)
+        do (ratification-error segment "Invalid character ~a. Path segment can only contain alphanumerics or ! $ & ' ( ) * + , ; = - . _ ~~ : @" char)))
+
 (define-test rootless-path (path)
   "Tests for a valid rootless path.
 
-[a-zA-Z0-9!$&'()*+,;=-._~:@]+"
+<segment-nz>(/<segment>)?"
   (when (= 0 (length path))
     (ratification-error path "Path must be at least one character long."))
-  (loop for char across path
-        unless (pchar-p char)
-          do (ratification-error path "Invalid character ~a. Path can only contain alphanumerics or ! $ & ' ( ) * + , ; = - . _ ~~ : @" char))) ;
+  (loop with begin = 0
+        for i from 0
+        for char across path
+        do (when (char= char #\/)
+             (test-path-segment (subseq path begin i))
+             (setf begin (1+ i)))
+        finally (test-path-segment (subseq path begin i))))
 
 (define-test absolute-path (path)
   "Tests for a valid absolute path.
