@@ -1,450 +1,248 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8"/>
-    <title>RATIFY</title>
-    <style type="text/css">
-      code a{text-decoration:none;}
-      h1{display:inline-block;font-size: 28pt;margin-bottom:0;}
-      code{font-family: Consolas, Inconsolata, monospace;}
-      h4{display: inline-block;margin:0;padding:0;}
-      ul{list-style: none;}
-      .package li{margin-bottom: 20px;}
-      .package pre{margin: 0 0 0 10px; white-space: pre-wrap;}
-      .package .nicknames{font-size: 12pt; font-weight: normal;}
-      table{margin: 20px;}
-      td{padding-bottom: 10px;}
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>ratify</h1>
-      <span>0.1.0</span>
-      <p>A collection of utilities to ratify, validate and parse inputs.</p>
-    </header>
-    <div id="content">
-      <article>
-        <documentate>
-          <span><h2>About Ratify</h2>
+<!DOCTYPE html> <html xmlns="http://www.w3.org/1999/xhtml"> <head> <meta charset="utf-8"/> <title>Ratify</title> <meta name="viewport" content="width=device-width"/> <meta name="description" content="A collection of utilities to ratify, validate and parse inputs."/> <meta name="author" content="Nicolas Hafner &lt;shinmera@tymoon.eu&gt;"/> <style type="text/css"> body{
+          max-width: 1024px;
+          margin: 0 auto 0 auto;
+          font-family: sans-serif;
+          color: #333333;
+          font-size: 14pt;
+          padding: 5px;
+      }
 
-<p>Ratify is a collection of utilities to perform validation checks and parsing. The main intention of usage for this is in web-applications in order to check form inputs for correctness and automatically parse them into their proper representations or return meaningful errors.</p>
+      body>header{
+          display:flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          max-width: 100%;
+      }
 
-<h2>How To</h2>
+      img{
+          max-width: 100%;
+          max-height: 100%;
+      }
 
-<p>Ratify has a load of <code>TEST-*</code> functions, each accompanied by a predicate equivalent. The <code>TEST-*</code> functions will signal errors of type <code><a href="#RATIFY-TOOLKIT:RATIFICATION-ERROR">RATIFICATION-ERROR</a></code> if the test fails, whereas the predicates will simply return <code>NIL</code>. Both will return the passed argument unmodified on success. Some of the tests have an equivalent <code>PARSE-*</code> function in order to turn the string into a more useful representation.</p>
+      code{
+          font-family: Consolas, Inconsolata, monospace;
+      }
 
-<p>The main interaction with Ratify is not supposed to be directly with the <code>TEST-*</code> and <code>PARSE-*</code> functions however, but rather through the <code><a href="#RATIFY-TESTING:TEST">TEST</a></code> and <code><a href="#RATIFY-PARSING:PARSE">PARSE</a></code> wrapper functions. Both also have a macro shorthand to perform many tests and parsings at once, <code><a href="#RATIFY-TESTING:PERFORM-COMBINED-TESTS">PERFORM-COMBINED-TESTS</a></code> and <code><a href="#RATIFY-PARSING:WITH-PARSED-FORMS">WITH-PARSED-FORMS</a></code>. These macros will perform as many tests as possible and only signal an error right after all tests have been made. This error is of type <code><a href="#RATIFY-TESTING:COMBINED-ERROR">COMBINED-ERROR</a></code>, which contains all the errors that occurred during the testing.</p>
+      a{
+          text-decoration: none;
+          color: #0055AA;
+      }
 
-<pre><code>(<a href="#RATIFY-TESTING:PERFORM-COMBINED-TESTS">ratify:perform-combined-tests</a>
+      #documentation{
+          text-align: justify;
+      }
+
+      #documentation pre{
+          margin-left: 20px;
+      }
+
+      #symbol-index>ul{
+          list-style: none;
+          padding: 0;
+      }
+      #symbol-index .package>ul{
+          list-style: none;
+          padding: 0 0 0 10px;
+      }
+      #symbol-index .package .nicknames{
+          font-weight: normal;
+      }
+      #symbol-index .package h4{
+          display: inline-block;
+          margin: 0;
+      }
+      #symbol-index .package article{
+          margin: 0 0 15px 0;
+      }
+      #symbol-index .package article header{
+          font-size: 1.2em;
+          font-weight: normal;
+      }
+      #symbol-index .package .name{
+          margin-right: 5px;
+      }
+      #symbol-index .package .docstring{
+          margin: 0 0 0 15px;
+          white-space: pre-wrap;
+          font-size: 12pt;
+      }
+
+      @media (max-width: 800px){
+          body{font-size: 12pt;}
+      } </style> </head> <body> <header> <h1>ratify</h1> <span class="version">0.1.0</span> <p class="description">A collection of utilities to ratify, validate and parse inputs.</p> </header> <main> <article id="documentation">  <div><h2>About Ratify</h2> <p>Ratify is a collection of utilities to perform validation checks and parsing. The main intention of usage for this is in web-applications in order to check form inputs for correctness and automatically parse them into their proper representations or return meaningful errors.</p> <h2>How To</h2> <p>Ratify has a load of <code>TEST-*</code> functions, each accompanied by a predicate equivalent. The <code>TEST-*</code> functions will signal errors of type <code><a href="#RATIFY:RATIFICATION-ERROR">RATIFICATION-ERROR</a></code> if the test fails, whereas the predicates will simply return <code>NIL</code>. Both will return the passed argument unmodified on success. Some of the tests have an equivalent <code>PARSE-*</code> function in order to turn the string into a more useful representation.</p> <p>The main interaction with Ratify is not supposed to be directly with the <code>TEST-*</code> and <code>PARSE-*</code> functions however, but rather through the <code><a href="#RATIFY:TEST">TEST</a></code> and <code><a href="#RATIFY:PARSE">PARSE</a></code> wrapper functions. Both also have a macro shorthand to perform many tests and parsings at once, <code><a href="#RATIFY:PERFORM-COMBINED-TESTS">PERFORM-COMBINED-TESTS</a></code> and <code><a href="#RATIFY:WITH-PARSED-FORMS">WITH-PARSED-FORMS</a></code>. These macros will perform as many tests as possible and only signal an error right after all tests have been made. This error is of type <code><a href="#RATIFY:COMBINED-ERROR">COMBINED-ERROR</a></code>, which contains all the errors that occurred during the testing.</p> <pre><code>(<a href="#RATIFY:PERFORM-COMBINED-TESTS">ratify:perform-combined-tests</a>
   (:integer &quot;45&quot;)
   (:date &quot;2014-08-01&quot;)
   (:ratio &quot;566/21&quot;))
 
-(<a href="#RATIFY-TESTING:PERFORM-COMBINED-TESTS">ratify:perform-combined-tests</a>
+(<a href="#RATIFY:PERFORM-COMBINED-TESTS">ratify:perform-combined-tests</a>
   (:integer &quot;4.5&quot; &quot;e&quot;)
   (:date &quot;2014-08-01&quot; &quot;2014&quot; &quot;2014-55-99&quot;)
   (:ratio &quot;566/21&quot; &quot;5.6/21&quot;))
-; Evaluation aborted on #&lt;RATIFY-TESTING:COMBINED-ERROR {10074E51D3}&gt;.</code></pre>
-
-<p>Or to perform parsing:</p>
-
-<pre><code>(<a href="http://l1sp.org/cl/LET">let</a> ((int &quot;45&quot;)
+; Evaluation aborted on #&lt;RATIFY-TESTING:COMBINED-ERROR {10074E51D3}&gt;.</code></pre> <p>Or to perform parsing:</p> <pre><code>(<a href="http://l1sp.org/cl/let">let</a> ((int &quot;45&quot;)
       (url &quot;http://foo.bar/baz.jp?what=ever#hashtag&quot;)
       (uri &quot;things-are://sometimes:complicated@with-all.these/damn?protocols=i'm#telling+you!&quot;)
       (dt &quot;2014-08-01T21:23:01&quot;))
-  (<a href="#RATIFY-PARSING:WITH-PARSED-FORMS">ratify:with-parsed-forms</a> (<a href="http://l1sp.org/cl/INTEGER">(:integer</a> int) (:url url) (:uri uri) (:datetime dt))
-    (<a href="http://l1sp.org/cl/LIST">list</a> int url uri dt)))</code></pre>
-
-<p>If an error occurs, the <code><a href="#RATIFY-TESTING:ERRORS">ERRORS</a></code> function gives access to the list of errors that the <code><a href="#RATIFY-TESTING:COMBINED-ERROR">COMBINED-ERROR</a></code> contains. For a complete list of testing and parsing functions, please see the <a href="http://shinmera.github.io/ratify">symbol index</a>. The syntax grammar used to describe the valid values in the docstrings of each test is regex with the addition of <code>&lt;brackets&gt;</code> to refer to other tests, sometimes accompanied with a second line that describes limits of the values.</p>
-</span>
-        </documentate>
-      </article>
-      <article>
-        <h2>Copyright</h2>
-        <span>ratify</span> is licensed under the <span><a href="https://tldrlegal.com/search?q=Artistic">Artistic</a></span> license and ©<span>2014</span> <span>Nicolas Hafner &lt;shinmera@tymoon.eu&gt;</span>. This library can be obtained on <a href="https://github.com/Shinmera/ratify">https://github.com/Shinmera/ratify</a>.
-      </article>
-      <article>
-        <h2>Package Index</h2>
-        <ul><li class="package">
-            <h3>
-              <a name="RATIFY-TOOLKIT" href="#RATIFY-TOOLKIT">RATIFY-TOOLKIT</a>
-              <span class="nicknames">(ORG.TYMOONNEXT.RATIFY.TOOLKIT)</span>
-            </h3>
-            <ul><li>
-                <a name="RATIFY-TOOLKIT:RATIFICATION-ERROR"/>
-                <article>
-                  <header>
-                    <span>CLASS</span>
-                    <code>
-                      <h4><a href="#RATIFY-TOOLKIT:RATIFICATION-ERROR">RATIFICATION-ERROR</a></h4>
-                      <span></span>
-                      <span></span>
-                    </code>
-                  </header>
-                  <pre>Error signalled if a test function hit an error in the format.
+  (<a href="#RATIFY:WITH-PARSED-FORMS">ratify:with-parsed-forms</a> ((:integer int) (:url url) (:uri uri) (:datetime dt))
+    (<a href="http://l1sp.org/cl/list">list</a> int url uri dt)))</code></pre> <p>If an error occurs, the <code><a href="#RATIFY:ERRORS">ERRORS</a></code> function gives access to the list of errors that the <code><a href="#RATIFY:COMBINED-ERROR">COMBINED-ERROR</a></code> contains. For a complete list of testing and parsing functions, please see the <a href="http://shinmera.github.io/ratify">symbol index</a>. The syntax grammar used to describe the valid values in the docstrings of each test is regex with the addition of <code>&lt;brackets&gt;</code> to refer to other tests, sometimes accompanied with a second line that describes limits of the values.</p> </div>  </article> <article id="copyright">  <h2>Copyright</h2> <span>ratify</span> is licensed under the <span><a href="https://tldrlegal.com/search?q=Artistic">Artistic</a></span> license.  © <span>Nicolas Hafner &lt;shinmera@tymoon.eu&gt;</span> .  This library can be obtained on <a href="https://github.com/Shinmera/ratify">https://github.com/Shinmera/ratify</a>.  </article>  <article id="symbol-index"> <h2>Package Index</h2> <ul><li class="package"> <h3> <a name="RATIFY" href="#RATIFY">RATIFY</a> <span class="nicknames">(ORG.TYMOONNEXT.RATIFY)</span> </h3> <ul><li> <a name="RATIFY:*PERMITTED-PROTOCOLS*"> </a> <article> <header class="special"> <span class="type">special</span>  <h4 class="name"><code><a href="#RATIFY:*PERMITTED-PROTOCOLS*">*PERMITTED-PROTOCOLS*</a></code></h4>  </header> <pre class="docstring">List of permitted protocols in a URL.</pre> </article> </li><li> <a name="RATIFY:COMBINED-ERROR"> </a> <article> <header class="condition"> <span class="type">condition</span>  <h4 class="name"><code><a href="#RATIFY:COMBINED-ERROR">COMBINED-ERROR</a></code></h4>  </header> <pre class="docstring">An error object that holds a combination of other errors.
+Used to test multiple things before unwinding the stack.</pre> </article> </li><li> <a name="RATIFY:RATIFICATION-ERROR"> </a> <article> <header class="condition"> <span class="type">condition</span>  <h4 class="name"><code><a href="#RATIFY:RATIFICATION-ERROR">RATIFICATION-ERROR</a></code></h4>  </header> <pre class="docstring">Error signalled if a test function hit an error in the format.
 The TEST-OBJECT slot contains the object that failed to pass the test.
-The MESSAGE slot contains a verbal explanation of what went wrong.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TOOLKIT:MAKE-KEYWORD"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TOOLKIT:MAKE-KEYWORD">MAKE-KEYWORD</a></h4>
-                      <span></span>
-                      <span>(NAME)</span>
-                    </code>
-                  </header>
-                  <pre>Returns the keyword equivalent of the passed NAME.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TOOLKIT:RATIFICATION-ERROR"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TOOLKIT:RATIFICATION-ERROR">RATIFICATION-ERROR</a></h4>
-                      <span></span>
-                      <span>(TEST-OBJECT &amp;OPTIONAL MESSAGE &amp;REST FORMAT-ARGS)</span>
-                    </code>
-                  </header>
-                  <pre>Shorthand function to signal a RATIFICATION-ERROR.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TOOLKIT:TRUE-ALPHA-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TOOLKIT:TRUE-ALPHA-P">TRUE-ALPHA-P</a></h4>
-                      <span></span>
-                      <span>(CHAR)</span>
-                    </code>
-                  </header>
-                  <pre>Returns T if the character is one of a-Z.
-
-ALPHA-CHAR-P as per CLHS is not strictly limited to just a-Z and returns T
-for undesired characters like ü on some implementations like SBCL.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TOOLKIT:TRUE-ALPHANUMERIC-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TOOLKIT:TRUE-ALPHANUMERIC-P">TRUE-ALPHANUMERIC-P</a></h4>
-                      <span></span>
-                      <span>(CHAR)</span>
-                    </code>
-                  </header>
-                  <pre>Returns T if the character is one of a-Z 0-9.
-
-ALPHANUMERICP as per CLHS is not strictly limited to just a-Z 0-9 and returns T
-for undesired characters like ü on some implementations like SBCL.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TOOLKIT:MESSAGE"/>
-                <article>
-                  <header>
-                    <span>GENERIC</span>
-                    <code>
-                      <h4><a href="#RATIFY-TOOLKIT:MESSAGE">MESSAGE</a></h4>
-                      <span></span>
-                      <span>(CONDITION)</span>
-                    </code>
-                  </header>
-                  <pre></pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TOOLKIT:TEST-OBJECT"/>
-                <article>
-                  <header>
-                    <span>GENERIC</span>
-                    <code>
-                      <h4><a href="#RATIFY-TOOLKIT:TEST-OBJECT">TEST-OBJECT</a></h4>
-                      <span></span>
-                      <span>(CONDITION)</span>
-                    </code>
-                  </header>
-                  <pre></pre>
-                </article>
-              </li></ul></li><li class="package">
-            <h3>
-              <a name="RATIFY-TESTING" href="#RATIFY-TESTING">RATIFY-TESTING</a>
-              <span class="nicknames">(ORG.TYMOONNEXT.RATIFY.TESTING)</span>
-            </h3>
-            <ul><li>
-                <a name="RATIFY-TESTING:COMBINED-ERROR"/>
-                <article>
-                  <header>
-                    <span>CLASS</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:COMBINED-ERROR">COMBINED-ERROR</a></h4>
-                      <span></span>
-                      <span></span>
-                    </code>
-                  </header>
-                  <pre>An error object that holds a combination of other errors.
-Used to test multiple things before unwinding the stack.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TESTING:TEST-FAILED"/>
-                <article>
-                  <header>
-                    <span>CLASS</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:TEST-FAILED">TEST-FAILED</a></h4>
-                      <span></span>
-                      <span></span>
-                    </code>
-                  </header>
-                  <pre>Condition signalled when a test fails.
+The MESSAGE slot contains a verbal explanation of what went wrong.</pre> </article> </li><li> <a name="RATIFY:TEST-FAILED"> </a> <article> <header class="condition"> <span class="type">condition</span>  <h4 class="name"><code><a href="#RATIFY:TEST-FAILED">TEST-FAILED</a></code></h4>  </header> <pre class="docstring">Condition signalled when a test fails.
 The TEST-NAME slot specifies the name of the test that was run.
 The TEST-OBJECT slot contains the object that failed the test.
-The CAUSE slot contains the original error object, usually of type RATIFICATION-ERROR.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TESTING:PERFORM-TEST"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:PERFORM-TEST">PERFORM-TEST</a></h4>
-                      <span></span>
-                      <span>(TEST-NAME TEST-OBJECT)</span>
-                    </code>
-                  </header>
-                  <pre>Performs the test named by TEST-NAME on TEST-OBJECT.
+The CAUSE slot contains the original error object, usually of type RATIFICATION-ERROR.</pre> </article> </li><li> <a name="RATIFY:CAUSE"> </a> <article> <header class="accessor"> <span class="type">accessor</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:CAUSE">CAUSE</a></code></h4> <code class="qualifiers"></code> <code class="arguments">CONDITION</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:ERRORS"> </a> <article> <header class="accessor"> <span class="type">accessor</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:ERRORS">ERRORS</a></code></h4> <code class="qualifiers"></code> <code class="arguments">CONDITION</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:MESSAGE"> </a> <article> <header class="accessor"> <span class="type">accessor</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:MESSAGE">MESSAGE</a></code></h4> <code class="qualifiers"></code> <code class="arguments">CONDITION</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:PARSER"> </a> <article> <header class="accessor"> <span class="type">accessor</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSER">PARSER</a></code></h4> <code class="qualifiers"></code> <code class="arguments">NAME</code><code>)</code>  </header> <pre class="docstring">Returns the function associated with the NAME.
+If no such parser can be found, #'IDENTITY is returned.
+The name is converted to a keyword.
 
-Automatically establishes a SKIP-ERROR restart and resignals any error
-as a new error of type TEST-FAILED.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TESTING:SKIPPABLE-ERROR"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:SKIPPABLE-ERROR">SKIPPABLE-ERROR</a></h4>
-                      <span></span>
-                      <span>(DATUM &amp;REST ARGUMENTS)</span>
-                    </code>
-                  </header>
-                  <pre>Signals a skippable error as per WITH-SKIPPING.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TESTING:TEST"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:TEST">TEST</a></h4>
-                      <span></span>
-                      <span>(NAME)</span>
-                    </code>
-                  </header>
-                  <pre>Returns the function associated with the NAME.
+SETF-able.</pre> </article> </li><li> <a name="RATIFY:TEST"> </a> <article> <header class="accessor"> <span class="type">accessor</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST">TEST</a></code></h4> <code class="qualifiers"></code> <code class="arguments">NAME</code><code>)</code>  </header> <pre class="docstring">Returns the function associated with the NAME.
 If no such test can be found, an error is signalled.
 The name is converted to a keyword.
 
-SETF-able.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TESTING:CAUSE"/>
-                <article>
-                  <header>
-                    <span>GENERIC</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:CAUSE">CAUSE</a></h4>
-                      <span></span>
-                      <span>(CONDITION)</span>
-                    </code>
-                  </header>
-                  <pre></pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TESTING:ERRORS"/>
-                <article>
-                  <header>
-                    <span>GENERIC</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:ERRORS">ERRORS</a></h4>
-                      <span></span>
-                      <span>(CONDITION)</span>
-                    </code>
-                  </header>
-                  <pre></pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TESTING:TEST-NAME"/>
-                <article>
-                  <header>
-                    <span>GENERIC</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:TEST-NAME">TEST-NAME</a></h4>
-                      <span></span>
-                      <span>(CONDITION)</span>
-                    </code>
-                  </header>
-                  <pre></pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TESTING:DEFINE-TEST"/>
-                <article>
-                  <header>
-                    <span>MACRO</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:DEFINE-TEST">DEFINE-TEST</a></h4>
-                      <span></span>
-                      <span>(NAME (PARAM) &amp;BODY BODY)</span>
-                    </code>
-                  </header>
-                  <pre>Defines a new test function with NAME.
-PARAM will be bound to the object to test, which is a string otherwise
-specified.
+SETF-able.</pre> </article> </li><li> <a name="RATIFY:TEST-NAME"> </a> <article> <header class="accessor"> <span class="type">accessor</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-NAME">TEST-NAME</a></code></h4> <code class="qualifiers"></code> <code class="arguments">CONDITION</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-OBJECT"> </a> <article> <header class="accessor"> <span class="type">accessor</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-OBJECT">TEST-OBJECT</a></code></h4> <code class="qualifiers"></code> <code class="arguments">CONDITION</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:ABSOLUTE-PATH-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:ABSOLUTE-PATH-P">ABSOLUTE-PATH-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PATH &amp;OPTIONAL (START 0) (END (LENGTH PATH))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-ABSOLUTE-PATH, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:ALPHABETIC-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:ALPHABETIC-P">ALPHABETIC-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">ALPHA &amp;OPTIONAL (START 0) (END (LENGTH ALPHA))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-ALPHABETIC, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:ALPHANUMERIC-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:ALPHANUMERIC-P">ALPHANUMERIC-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">ALPHA &amp;OPTIONAL (START 0) (END (LENGTH ALPHA))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-ALPHANUMERIC, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:AUTHORITY-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:AUTHORITY-P">AUTHORITY-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">AUTHORITY &amp;OPTIONAL (START 0) (END (LENGTH AUTHORITY))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-AUTHORITY, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:BIT-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:BIT-P">BIT-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">BIT &amp;OPTIONAL (START 0) (END (LENGTH BIT))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-BIT, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:BOOLEAN-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:BOOLEAN-P">BOOLEAN-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">BOOLEAN &amp;OPTIONAL (START 0) (END (LENGTH BOOLEAN))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-BOOLEAN, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:CHARACTER-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:CHARACTER-P">CHARACTER-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">CHARACTER &amp;OPTIONAL (START 0) (END (LENGTH CHARACTER))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-CHARACTER, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:CHECKBOX-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:CHECKBOX-P">CHECKBOX-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">INPUT &amp;OPTIONAL (START 0) (END (LENGTH INPUT))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-CHECKBOX, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:COLOR-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:COLOR-P">COLOR-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">COLOR &amp;OPTIONAL (START 0) (END (LENGTH COLOR))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-COLOR, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:COMPLEX-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:COMPLEX-P">COMPLEX-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">COMPLEX &amp;OPTIONAL (START 0) (END (LENGTH COMPLEX))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-COMPLEX, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:DATE-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:DATE-P">DATE-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DATE &amp;OPTIONAL (START 0) (END (LENGTH DATE))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-DATE, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:DATETIME-LOCAL-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:DATETIME-LOCAL-P">DATETIME-LOCAL-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DATETIME &amp;OPTIONAL (START 0) (END (LENGTH DATETIME))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-DATETIME-LOCAL, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:DATETIME-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:DATETIME-P">DATETIME-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DATETIME &amp;OPTIONAL (START 0) (END (LENGTH DATETIME))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-DATETIME, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:DAY-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:DAY-P">DAY-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DAY &amp;OPTIONAL (START 0) (END (LENGTH DAY))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-DAY, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:DOMAIN-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:DOMAIN-P">DOMAIN-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DOMAIN &amp;OPTIONAL (START 0) (END (LENGTH DOMAIN))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-DOMAIN, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:EMAIL-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:EMAIL-P">EMAIL-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">EMAIL &amp;OPTIONAL (START 0) (END (LENGTH EMAIL))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-EMAIL, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:FILE-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:FILE-P">FILE-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">FILE &amp;OPTIONAL (START 0) (END (LENGTH FILE))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-FILE, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:FLOAT-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:FLOAT-P">FLOAT-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">FLOAT &amp;OPTIONAL (START 0) (END (LENGTH FLOAT))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-FLOAT, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:FRAGMENT-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:FRAGMENT-P">FRAGMENT-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">FRAGMENT &amp;OPTIONAL (START 0) (END (LENGTH FRAGMENT))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-FRAGMENT, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:HIERARCHICAL-PART-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:HIERARCHICAL-PART-P">HIERARCHICAL-PART-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">HIERARCHICAL &amp;OPTIONAL (START 0) (END (LENGTH HIERARCHICAL))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-HIERARCHICAL-PART, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:HOST-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:HOST-P">HOST-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">HOST &amp;OPTIONAL (START 0) (END (LENGTH HOST))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-HOST, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:HOSTNAME-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:HOSTNAME-P">HOSTNAME-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">HOSTNAME &amp;OPTIONAL (START 0) (END (LENGTH HOSTNAME))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-HOSTNAME, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:HOUR-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:HOUR-P">HOUR-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">HOUR &amp;OPTIONAL (START 0) (END (LENGTH HOUR))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-HOUR, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:INTEGER-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:INTEGER-P">INTEGER-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">INTEGER &amp;OPTIONAL (START 0) (END (LENGTH INTEGER))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-INTEGER, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:IP-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:IP-P">IP-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">IP &amp;OPTIONAL (START 0) (END (LENGTH IP))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-IP, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:IPV4-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:IPV4-P">IPV4-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">IP &amp;OPTIONAL (START 0) (END (LENGTH IP))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-IPV4, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:IPV6-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:IPV6-P">IPV6-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">IP &amp;OPTIONAL (START 0) (END (LENGTH IP))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-IPV6, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:MAKE-KEYWORD"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:MAKE-KEYWORD">MAKE-KEYWORD</a></code></h4> <code class="qualifiers"></code> <code class="arguments">NAME</code><code>)</code>  </header> <pre class="docstring">Returns the keyword equivalent of the passed NAME.</pre> </article> </li><li> <a name="RATIFY:MINUTE-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:MINUTE-P">MINUTE-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">MINUTE &amp;OPTIONAL (START 0) (END (LENGTH MINUTE))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-MINUTE, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:MONTH-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:MONTH-P">MONTH-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">MONTH &amp;OPTIONAL (START 0) (END (LENGTH MONTH))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-MONTH, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:NUMBER-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:NUMBER-P">NUMBER-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">NUMBER &amp;OPTIONAL (START 0) (END (LENGTH NUMBER))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-NUMBER, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:NUMERIC-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:NUMERIC-P">NUMERIC-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">NUMBER &amp;OPTIONAL (START 0) (END (LENGTH NUMBER))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-NUMERIC, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:OFFSET-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:OFFSET-P">OFFSET-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">OFFSET &amp;OPTIONAL (START 0) (END (LENGTH OFFSET))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-OFFSET, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:PARSE"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE">PARSE</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PARSER-NAME OBJECT</code><code>)</code>  </header> <pre class="docstring">Attempts to parse OBJECT using the parser named by PARSER-NAME.
+
+Automatically establishes a SKIP-ERROR restart as per WITH-SKIPPING.
+Performs exactly two operations:
+1) Call the test function of name PARSER-NAME on the object
+2) Call the parse function of name PARSER-NAME on the object</pre> </article> </li><li> <a name="RATIFY:PARSE-BIT"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-BIT">PARSE-BIT</a></code></h4> <code class="qualifiers"></code> <code class="arguments">BIT &amp;OPTIONAL (START 0) (END (LENGTH BIT))</code><code>)</code>  </header> <pre class="docstring">Parses into a bit of either 1 or 0.</pre> </article> </li><li> <a name="RATIFY:PARSE-BOOLEAN"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-BOOLEAN">PARSE-BOOLEAN</a></code></h4> <code class="qualifiers"></code> <code class="arguments">BOOLEAN &amp;OPTIONAL (START 0) (END (LENGTH BOOLEAN))</code><code>)</code>  </header> <pre class="docstring">Parses into a boolean.
+
+Returns T if one of (&quot;1&quot; &quot;true&quot; &quot;T&quot;), NIL otherwise.</pre> </article> </li><li> <a name="RATIFY:PARSE-CHARACTER"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-CHARACTER">PARSE-CHARACTER</a></code></h4> <code class="qualifiers"></code> <code class="arguments">CHARACTER &amp;OPTIONAL (START 0) (END (LENGTH CHARACTER))</code><code>)</code>  </header> <pre class="docstring">Parses into a character.</pre> </article> </li><li> <a name="RATIFY:PARSE-COMPLEX"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-COMPLEX">PARSE-COMPLEX</a></code></h4> <code class="qualifiers"></code> <code class="arguments">COMPLEX &amp;OPTIONAL (START 0) (END (LENGTH COMPLEX))</code><code>)</code>  </header> <pre class="docstring">Parses into a complex number.</pre> </article> </li><li> <a name="RATIFY:PARSE-DATE"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-DATE">PARSE-DATE</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DATE &amp;OPTIONAL (START 0) (END (LENGTH DATE))</code><code>)</code>  </header> <pre class="docstring">Parses the given date into a LOCAL-TIME:TIMESTAMP object.</pre> </article> </li><li> <a name="RATIFY:PARSE-DATETIME"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-DATETIME">PARSE-DATETIME</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DATETIME &amp;OPTIONAL (START 0) (END (LENGTH DATETIME))</code><code>)</code>  </header> <pre class="docstring">Parses the given datetime into a LOCAL-TIME:TIMESTAMP object.
+The only part that is allowed to be omitted is the timezone offset specification.</pre> </article> </li><li> <a name="RATIFY:PARSE-DAY"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-DAY">PARSE-DAY</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DAY &amp;OPTIONAL (START 0) (END (LENGTH DAY))</code><code>)</code>  </header> <pre class="docstring">Parses the day into an integer</pre> </article> </li><li> <a name="RATIFY:PARSE-FLOAT"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-FLOAT">PARSE-FLOAT</a></code></h4> <code class="qualifiers"></code> <code class="arguments">FLOAT &amp;OPTIONAL (START 0) (END (LENGTH FLOAT))</code><code>)</code>  </header> <pre class="docstring">Parses into a float.</pre> </article> </li><li> <a name="RATIFY:PARSE-HOUR"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-HOUR">PARSE-HOUR</a></code></h4> <code class="qualifiers"></code> <code class="arguments">HOUR &amp;OPTIONAL (START 0) (END (LENGTH HOUR))</code><code>)</code>  </header> <pre class="docstring">Parses the hour into an integer</pre> </article> </li><li> <a name="RATIFY:PARSE-INTEGER"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-INTEGER">PARSE-INTEGER</a></code></h4> <code class="qualifiers"></code> <code class="arguments">STRING &amp;KEY (START 0) END (RADIX 10) JUNK-ALLOWED</code><code>)</code>  </header> <pre class="docstring">Examine the substring of string delimited by start and end
+  (default to the beginning and end of the string)  It skips over
+  whitespace characters and then tries to parse an integer. The
+  radix parameter must be between 2 and 36.</pre> </article> </li><li> <a name="RATIFY:PARSE-MINUTE"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-MINUTE">PARSE-MINUTE</a></code></h4> <code class="qualifiers"></code> <code class="arguments">MINUTE &amp;OPTIONAL (START 0) (END (LENGTH MINUTE))</code><code>)</code>  </header> <pre class="docstring">Parses the minute into an integer</pre> </article> </li><li> <a name="RATIFY:PARSE-MONTH"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-MONTH">PARSE-MONTH</a></code></h4> <code class="qualifiers"></code> <code class="arguments">MONTH &amp;OPTIONAL (START 0) (END (LENGTH MONTH))</code><code>)</code>  </header> <pre class="docstring">Parses the month into an integer.</pre> </article> </li><li> <a name="RATIFY:PARSE-NUMBER"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-NUMBER">PARSE-NUMBER</a></code></h4> <code class="qualifiers"></code> <code class="arguments">NUMBER &amp;OPTIONAL (START 0) (END (LENGTH NUMBER))</code><code>)</code>  </header> <pre class="docstring">Parses into a number.</pre> </article> </li><li> <a name="RATIFY:PARSE-OFFSET"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-OFFSET">PARSE-OFFSET</a></code></h4> <code class="qualifiers"></code> <code class="arguments">OFFSET &amp;OPTIONAL (START 0) (END (LENGTH OFFSET))</code><code>)</code>  </header> <pre class="docstring">Parses the offset into a list of (DIR HOUR MINUTE), wherein DIR is 
+a string of either &quot;+&quot; or &quot;-&quot;, denoting the direction of the offset. </pre> </article> </li><li> <a name="RATIFY:PARSE-RATIO"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-RATIO">PARSE-RATIO</a></code></h4> <code class="qualifiers"></code> <code class="arguments">RATIO &amp;OPTIONAL (START 0) (END (LENGTH RATIO))</code><code>)</code>  </header> <pre class="docstring">Parses into a ratio.</pre> </article> </li><li> <a name="RATIFY:PARSE-RATIONAL"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-RATIONAL">PARSE-RATIONAL</a></code></h4> <code class="qualifiers"></code> <code class="arguments">RATIONAL &amp;OPTIONAL (START 0) (END (LENGTH RATIONAL))</code><code>)</code>  </header> <pre class="docstring">Parses into a rational.</pre> </article> </li><li> <a name="RATIFY:PARSE-REAL"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-REAL">PARSE-REAL</a></code></h4> <code class="qualifiers"></code> <code class="arguments">REAL &amp;OPTIONAL (START 0) (END (LENGTH REAL))</code><code>)</code>  </header> <pre class="docstring">Parses into a real.</pre> </article> </li><li> <a name="RATIFY:PARSE-SECOND"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-SECOND">PARSE-SECOND</a></code></h4> <code class="qualifiers"></code> <code class="arguments">SECOND &amp;OPTIONAL (START 0) (END (LENGTH SECOND))</code><code>)</code>  </header> <pre class="docstring">Parses the second into an integer</pre> </article> </li><li> <a name="RATIFY:PARSE-STRING"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-STRING">PARSE-STRING</a></code></h4> <code class="qualifiers"></code> <code class="arguments">STRING &amp;OPTIONAL (START 0) (END (LENGTH STRING))</code><code>)</code>  </header> <pre class="docstring">Parses into a string (simply returns its argument).</pre> </article> </li><li> <a name="RATIFY:PARSE-TIME"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-TIME">PARSE-TIME</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TIME &amp;OPTIONAL (START 0) (END (LENGTH TIME))</code><code>)</code>  </header> <pre class="docstring">Parses the given time into a LOCAL-TIME:TIMESTAMP object.</pre> </article> </li><li> <a name="RATIFY:PARSE-UNSIGNED-INTEGER"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-UNSIGNED-INTEGER">PARSE-UNSIGNED-INTEGER</a></code></h4> <code class="qualifiers"></code> <code class="arguments">INTEGER &amp;OPTIONAL (START 0) (END (LENGTH INTEGER))</code><code>)</code>  </header> <pre class="docstring">Parses into an integer.</pre> </article> </li><li> <a name="RATIFY:PARSE-YEAR"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PARSE-YEAR">PARSE-YEAR</a></code></h4> <code class="qualifiers"></code> <code class="arguments">YEAR &amp;OPTIONAL (START 0) (END (LENGTH YEAR))</code><code>)</code>  </header> <pre class="docstring">Parses the year into an integer.</pre> </article> </li><li> <a name="RATIFY:PASSWORD-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PASSWORD-P">PASSWORD-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PW &amp;OPTIONAL (START 0) (END (LENGTH PW))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-PASSWORD, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:PATH-SEGMENT-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PATH-SEGMENT-P">PATH-SEGMENT-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">SEGMENT &amp;OPTIONAL (START 0) (END (LENGTH SEGMENT))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-PATH-SEGMENT, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:PERFORM-TEST"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PERFORM-TEST">PERFORM-TEST</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TEST-NAME TEST-OBJECT</code><code>)</code>  </header> <pre class="docstring">Performs the test named by TEST-NAME on TEST-OBJECT.
+
+Automatically establishes a SKIP-ERROR restart and resignals any error
+as a new error of type TEST-FAILED.</pre> </article> </li><li> <a name="RATIFY:PORT-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PORT-P">PORT-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PORT &amp;OPTIONAL (START 0) (END (LENGTH PORT))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-PORT, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:PROPERTY-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PROPERTY-P">PROPERTY-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PROPERTY &amp;OPTIONAL (START 0) (END (LENGTH PROPERTY))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-PROPERTY, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:PROTOCOL-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PROTOCOL-P">PROTOCOL-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PROTOCOL &amp;OPTIONAL (START 0) (END (LENGTH PROTOCOL))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-PROTOCOL, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:QUERY-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:QUERY-P">QUERY-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">QUERY &amp;OPTIONAL (START 0) (END (LENGTH QUERY))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-QUERY, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:RADIO-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:RADIO-P">RADIO-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">RADIO &amp;OPTIONAL (START 0) (END (LENGTH RADIO))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-RADIO, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:RANGE-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:RANGE-P">RANGE-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">RANGE &amp;OPTIONAL (START 0) (END (LENGTH RANGE))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-RANGE, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:RATIFICATION-ERROR"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:RATIFICATION-ERROR">RATIFICATION-ERROR</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TEST-OBJECT &amp;OPTIONAL MESSAGE &amp;REST FORMAT-ARGS</code><code>)</code>  </header> <pre class="docstring">Shorthand function to signal a RATIFICATION-ERROR.</pre> </article> </li><li> <a name="RATIFY:RATIO-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:RATIO-P">RATIO-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">RATIO &amp;OPTIONAL (START 0) (END (LENGTH RATIO))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-RATIO, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:RATIONAL-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:RATIONAL-P">RATIONAL-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">RATIONAL &amp;OPTIONAL (START 0) (END (LENGTH RATIONAL))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-RATIONAL, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:REAL-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:REAL-P">REAL-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">REAL &amp;OPTIONAL (START 0) (END (LENGTH REAL))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-REAL, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:ROOTLESS-PATH-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:ROOTLESS-PATH-P">ROOTLESS-PATH-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PATH &amp;OPTIONAL (START 0) (END (LENGTH PATH))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-ROOTLESS-PATH, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:SCHEME-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:SCHEME-P">SCHEME-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">SCHEME &amp;OPTIONAL (START 0) (END (LENGTH SCHEME))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-SCHEME, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:SEARCH-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:SEARCH-P">SEARCH-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">SEARCH &amp;OPTIONAL (START 0) (END (LENGTH SEARCH))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-SEARCH, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:SECOND-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:SECOND-P">SECOND-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">SECOND &amp;OPTIONAL (START 0) (END (LENGTH SECOND))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-SECOND, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:SKIPPABLE-ERROR"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:SKIPPABLE-ERROR">SKIPPABLE-ERROR</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DATUM &amp;REST ARGUMENTS</code><code>)</code>  </header> <pre class="docstring">Signals a skippable error as per WITH-SKIPPING.</pre> </article> </li><li> <a name="RATIFY:STRING-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:STRING-P">STRING-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">STRING &amp;OPTIONAL (START 0) (END (LENGTH STRING))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-STRING, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:TEL-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEL-P">TEL-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TEL &amp;OPTIONAL (START 0) (END (LENGTH TEL))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-TEL, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:TEST-ABSOLUTE-PATH"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-ABSOLUTE-PATH">TEST-ABSOLUTE-PATH</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PATH &amp;OPTIONAL (START 0) (END (LENGTH PATH))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid absolute path.
+
+/&lt;rootless-path&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-ALPHABETIC"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-ALPHABETIC">TEST-ALPHABETIC</a></code></h4> <code class="qualifiers"></code> <code class="arguments">ALPHA &amp;OPTIONAL (START 0) (END (LENGTH ALPHA))</code><code>)</code>  </header> <pre class="docstring">Tests for an alphabetic string.
+
+[a-zA-Z]*</pre> </article> </li><li> <a name="RATIFY:TEST-ALPHANUMERIC"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-ALPHANUMERIC">TEST-ALPHANUMERIC</a></code></h4> <code class="qualifiers"></code> <code class="arguments">ALPHA &amp;OPTIONAL (START 0) (END (LENGTH ALPHA))</code><code>)</code>  </header> <pre class="docstring">Tests for an alphanumeric string.
+
+[a-zA-Z0-9]*</pre> </article> </li><li> <a name="RATIFY:TEST-AUTHORITY"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-AUTHORITY">TEST-AUTHORITY</a></code></h4> <code class="qualifiers"></code> <code class="arguments">AUTHORITY &amp;OPTIONAL (START 0) (END (LENGTH AUTHORITY))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid authority.
+
+(&lt;user&gt;@)?&lt;authority&gt;(:&lt;port&gt;)?</pre> </article> </li><li> <a name="RATIFY:TEST-BIT"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-BIT">TEST-BIT</a></code></h4> <code class="qualifiers"></code> <code class="arguments">BIT &amp;OPTIONAL (START 0) (END (LENGTH BIT))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid bit.
+
+[01]</pre> </article> </li><li> <a name="RATIFY:TEST-BOOLEAN"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-BOOLEAN">TEST-BOOLEAN</a></code></h4> <code class="qualifiers"></code> <code class="arguments">BOOLEAN &amp;OPTIONAL (START 0) (END (LENGTH BOOLEAN))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid boolean.
+
+1|0|true|false|T|NIL
+case-insensitive</pre> </article> </li><li> <a name="RATIFY:TEST-CHARACTER"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-CHARACTER">TEST-CHARACTER</a></code></h4> <code class="qualifiers"></code> <code class="arguments">CHARACTER &amp;OPTIONAL (START 0) (END (LENGTH CHARACTER))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid character.
+
+.{1}</pre> </article> </li><li> <a name="RATIFY:TEST-CHECKBOX"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-CHECKBOX">TEST-CHECKBOX</a></code></h4> <code class="qualifiers"></code> <code class="arguments">INPUT &amp;OPTIONAL (START 0) (END (LENGTH INPUT))</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-COLOR"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-COLOR">TEST-COLOR</a></code></h4> <code class="qualifiers"></code> <code class="arguments">COLOR &amp;OPTIONAL (START 0) (END (LENGTH COLOR))</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-COMPLEX"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-COMPLEX">TEST-COMPLEX</a></code></h4> <code class="qualifiers"></code> <code class="arguments">COMPLEX &amp;OPTIONAL (START 0) (END (LENGTH COMPLEX))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid complex number.
+
+&lt;real&gt;[cC]&lt;real&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-DATE"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-DATE">TEST-DATE</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DATE &amp;OPTIONAL (START 0) (END (LENGTH DATE))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid date.
+
+&lt;year&gt;-&lt;month&gt;-&lt;day&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-DATETIME"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-DATETIME">TEST-DATETIME</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DATETIME &amp;OPTIONAL (START 0) (END (LENGTH DATETIME))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid datetime.
+
+&lt;year&gt;-&lt;month&gt;-&lt;day&gt;T&lt;hour&gt;:&lt;minute&gt;:&lt;second&gt;Z&lt;offset&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-DATETIME-LOCAL"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-DATETIME-LOCAL">TEST-DATETIME-LOCAL</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DATETIME &amp;OPTIONAL (START 0) (END (LENGTH DATETIME))</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-DAY"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-DAY">TEST-DAY</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DAY &amp;OPTIONAL (START 0) (END (LENGTH DAY))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid day.
+
+[0-9]{1,2}
+1&lt;=val&lt;=31</pre> </article> </li><li> <a name="RATIFY:TEST-DOMAIN"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-DOMAIN">TEST-DOMAIN</a></code></h4> <code class="qualifiers"></code> <code class="arguments">DOMAIN &amp;OPTIONAL (START 0) (END (LENGTH DOMAIN))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid domain.
+
+[&lt;ip&gt;]|&lt;hostname&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-EMAIL"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-EMAIL">TEST-EMAIL</a></code></h4> <code class="qualifiers"></code> <code class="arguments">EMAIL &amp;OPTIONAL (START 0) (END (LENGTH EMAIL))</code><code>)</code>  </header> <pre class="docstring">Test an e-mail address for validity according to http://en.wikipedia.org/wiki/Email_address#Syntax
+
+&lt;local-part&gt;@&lt;domain&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-FILE"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-FILE">TEST-FILE</a></code></h4> <code class="qualifiers"></code> <code class="arguments">FILE &amp;OPTIONAL (START 0) (END (LENGTH FILE))</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-FLOAT"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-FLOAT">TEST-FLOAT</a></code></h4> <code class="qualifiers"></code> <code class="arguments">FLOAT &amp;OPTIONAL (START 0) (END (LENGTH FLOAT))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid float.
+
+[+-]?&lt;unsigned-integer&gt;(\.&lt;unsigned-integer&gt;)?(e&lt;unsigned-integer&gt;)?</pre> </article> </li><li> <a name="RATIFY:TEST-FRAGMENT"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-FRAGMENT">TEST-FRAGMENT</a></code></h4> <code class="qualifiers"></code> <code class="arguments">FRAGMENT &amp;OPTIONAL (START 0) (END (LENGTH FRAGMENT))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid fragment part.
+
+[a-zA-Z0-9!$&amp;'()*+,;=-._~:@?/]+</pre> </article> </li><li> <a name="RATIFY:TEST-HIERARCHICAL-PART"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-HIERARCHICAL-PART">TEST-HIERARCHICAL-PART</a></code></h4> <code class="qualifiers"></code> <code class="arguments">HIERARCHICAL &amp;OPTIONAL (START 0) (END (LENGTH HIERARCHICAL))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid hierarchical part.
+
+&lt;absolute-path&gt;|//&lt;authority&gt;&lt;absolute-path&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-HOST"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-HOST">TEST-HOST</a></code></h4> <code class="qualifiers"></code> <code class="arguments">HOST &amp;OPTIONAL (START 0) (END (LENGTH HOST))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid host name.
+
+[&lt;ip&gt;]|[a-zA-Z0-9-._~%!$&amp;'()*+,;=]+</pre> </article> </li><li> <a name="RATIFY:TEST-HOSTNAME"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-HOSTNAME">TEST-HOSTNAME</a></code></h4> <code class="qualifiers"></code> <code class="arguments">HOSTNAME &amp;OPTIONAL (START 0) (END (LENGTH HOSTNAME))</code><code>)</code>  </header> <pre class="docstring">Test a hostname for validity according to http://en.wikipedia.org/wiki/Hostname
+
+[a-zA-Z0-9-]{1,63}(\.[a-zA-Z0-9-]{1,63})*
+1&lt;=length&lt;=255</pre> </article> </li><li> <a name="RATIFY:TEST-HOUR"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-HOUR">TEST-HOUR</a></code></h4> <code class="qualifiers"></code> <code class="arguments">HOUR &amp;OPTIONAL (START 0) (END (LENGTH HOUR))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid hour.
+
+[0-9]{1,2}
+0&lt;=val&lt;=23</pre> </article> </li><li> <a name="RATIFY:TEST-INTEGER"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-INTEGER">TEST-INTEGER</a></code></h4> <code class="qualifiers"></code> <code class="arguments">INTEGER &amp;OPTIONAL (START 0) (END (LENGTH INTEGER))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid signed integer.
+
+[+-]?&lt;unsigned-integer&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-IP"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-IP">TEST-IP</a></code></h4> <code class="qualifiers"></code> <code class="arguments">IP &amp;OPTIONAL (START 0) (END (LENGTH IP))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid IP address.
+
+&lt;ipv6&gt;|&lt;ipv4&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-IPV4"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-IPV4">TEST-IPV4</a></code></h4> <code class="qualifiers"></code> <code class="arguments">IP &amp;OPTIONAL (START 0) (END (LENGTH IP))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid IPv4
+
+&lt;unsigned-integer&gt;\.&lt;unsigned-integer&gt;\.&lt;unsigned-integer&gt;\.&lt;unsigned-integer&gt;
+0&lt;=unsigned-integer&lt;=255</pre> </article> </li><li> <a name="RATIFY:TEST-IPV6"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-IPV6">TEST-IPV6</a></code></h4> <code class="qualifiers"></code> <code class="arguments">IP &amp;OPTIONAL (START 0) (END (LENGTH IP))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid IPv6
+
+[0-9A-F]:(:|[0-9A-F]:){1,6})[0-9A-F]?
+0000&lt;=val&lt;=FFFF</pre> </article> </li><li> <a name="RATIFY:TEST-MINUTE"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-MINUTE">TEST-MINUTE</a></code></h4> <code class="qualifiers"></code> <code class="arguments">MINUTE &amp;OPTIONAL (START 0) (END (LENGTH MINUTE))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid minute.
+
+[0-9]{1,2}
+0&lt;=val&lt;=59</pre> </article> </li><li> <a name="RATIFY:TEST-MONTH"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-MONTH">TEST-MONTH</a></code></h4> <code class="qualifiers"></code> <code class="arguments">MONTH &amp;OPTIONAL (START 0) (END (LENGTH MONTH))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid month.
+
+[0-9]{1,2}
+1&lt;=val&lt;=12</pre> </article> </li><li> <a name="RATIFY:TEST-NUMBER"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-NUMBER">TEST-NUMBER</a></code></h4> <code class="qualifiers"></code> <code class="arguments">NUMBER &amp;OPTIONAL (START 0) (END (LENGTH NUMBER))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid number.
+
+&lt;real&gt;|&lt;complex&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-NUMERIC"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-NUMERIC">TEST-NUMERIC</a></code></h4> <code class="qualifiers"></code> <code class="arguments">NUMBER &amp;OPTIONAL (START 0) (END (LENGTH NUMBER))</code><code>)</code>  </header> <pre class="docstring">Tests for a numeric string.
+
+[0-9]*</pre> </article> </li><li> <a name="RATIFY:TEST-OFFSET"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-OFFSET">TEST-OFFSET</a></code></h4> <code class="qualifiers"></code> <code class="arguments">OFFSET &amp;OPTIONAL (START 0) (END (LENGTH OFFSET))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid offset.
+
+[-+]hour:minute</pre> </article> </li><li> <a name="RATIFY:TEST-PASSWORD"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-PASSWORD">TEST-PASSWORD</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PW &amp;OPTIONAL (START 0) (END (LENGTH PW))</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-PATH-SEGMENT"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-PATH-SEGMENT">TEST-PATH-SEGMENT</a></code></h4> <code class="qualifiers"></code> <code class="arguments">SEGMENT &amp;OPTIONAL (START 0) (END (LENGTH SEGMENT))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid path segment.
+
+[a-zA-Z0-9!$&amp;'()*+,;=-._~:@]+</pre> </article> </li><li> <a name="RATIFY:TEST-PORT"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-PORT">TEST-PORT</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PORT &amp;OPTIONAL (START 0) (END (LENGTH PORT))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid port.
+
+&lt;unsigned-integer&gt;
+0&lt;=val&lt;=65535</pre> </article> </li><li> <a name="RATIFY:TEST-PROPERTY"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-PROPERTY">TEST-PROPERTY</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PROPERTY &amp;OPTIONAL (START 0) (END (LENGTH PROPERTY))</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-PROTOCOL"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-PROTOCOL">TEST-PROTOCOL</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PROTOCOL &amp;OPTIONAL (START 0) (END (LENGTH PROTOCOL))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid protocol according to *PERMITTED-PROTOCOLS*</pre> </article> </li><li> <a name="RATIFY:TEST-QUERY"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-QUERY">TEST-QUERY</a></code></h4> <code class="qualifiers"></code> <code class="arguments">QUERY &amp;OPTIONAL (START 0) (END (LENGTH QUERY))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid query part.
+
+[a-zA-Z0-9!$&amp;'()*+,;=-._~:@?/]+</pre> </article> </li><li> <a name="RATIFY:TEST-RADIO"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-RADIO">TEST-RADIO</a></code></h4> <code class="qualifiers"></code> <code class="arguments">RADIO &amp;OPTIONAL (START 0) (END (LENGTH RADIO))</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-RANGE"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-RANGE">TEST-RANGE</a></code></h4> <code class="qualifiers"></code> <code class="arguments">RANGE &amp;OPTIONAL (START 0) (END (LENGTH RANGE))</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-RATIO"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-RATIO">TEST-RATIO</a></code></h4> <code class="qualifiers"></code> <code class="arguments">RATIO &amp;OPTIONAL (START 0) (END (LENGTH RATIO))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid ratio.
+
+[+-]?&lt;unsigned-integer&gt;/&lt;unsigned-integer&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-RATIONAL"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-RATIONAL">TEST-RATIONAL</a></code></h4> <code class="qualifiers"></code> <code class="arguments">RATIONAL &amp;OPTIONAL (START 0) (END (LENGTH RATIONAL))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid rational.
+
+[+-]?&lt;unsigned-integer&gt;(/&lt;unsigned-integer&gt;)?</pre> </article> </li><li> <a name="RATIFY:TEST-REAL"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-REAL">TEST-REAL</a></code></h4> <code class="qualifiers"></code> <code class="arguments">REAL &amp;OPTIONAL (START 0) (END (LENGTH REAL))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid real.
+
+&lt;rational&gt;|&lt;float&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-ROOTLESS-PATH"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-ROOTLESS-PATH">TEST-ROOTLESS-PATH</a></code></h4> <code class="qualifiers"></code> <code class="arguments">PATH &amp;OPTIONAL (START 0) (END (LENGTH PATH))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid rootless path.
+
+&lt;segment-nz&gt;(/&lt;segment&gt;)?</pre> </article> </li><li> <a name="RATIFY:TEST-SCHEME"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-SCHEME">TEST-SCHEME</a></code></h4> <code class="qualifiers"></code> <code class="arguments">SCHEME &amp;OPTIONAL (START 0) (END (LENGTH SCHEME))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid scheme.
+
+[a-zA-Z][a-zA-Z0-9-.+]*</pre> </article> </li><li> <a name="RATIFY:TEST-SEARCH"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-SEARCH">TEST-SEARCH</a></code></h4> <code class="qualifiers"></code> <code class="arguments">SEARCH &amp;OPTIONAL (START 0) (END (LENGTH SEARCH))</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-SECOND"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-SECOND">TEST-SECOND</a></code></h4> <code class="qualifiers"></code> <code class="arguments">SECOND &amp;OPTIONAL (START 0) (END (LENGTH SECOND))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid second.
+
+[0-9]{1,2}
+0&lt;=val&lt;=59</pre> </article> </li><li> <a name="RATIFY:TEST-STRING"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-STRING">TEST-STRING</a></code></h4> <code class="qualifiers"></code> <code class="arguments">STRING &amp;OPTIONAL (START 0) (END (LENGTH STRING))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid string.
+
+.+</pre> </article> </li><li> <a name="RATIFY:TEST-TEL"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-TEL">TEST-TEL</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TEL &amp;OPTIONAL (START 0) (END (LENGTH TEL))</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-TEXT"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-TEXT">TEST-TEXT</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TEXT &amp;OPTIONAL (START 0) (END (LENGTH TEXT))</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-TEXTAREA"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-TEXTAREA">TEST-TEXTAREA</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TEXT &amp;OPTIONAL (START 0) (END (LENGTH TEXT))</code><code>)</code>  </header> <pre class="docstring"/> </article> </li><li> <a name="RATIFY:TEST-TIME"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-TIME">TEST-TIME</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TIME &amp;OPTIONAL (START 0) (END (LENGTH TIME))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid time.
+
+&lt;hour&gt;:&lt;minute&gt;:&lt;second&gt;Z&lt;offset&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-UNSIGNED-INTEGER"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-UNSIGNED-INTEGER">TEST-UNSIGNED-INTEGER</a></code></h4> <code class="qualifiers"></code> <code class="arguments">INTEGER &amp;OPTIONAL (START 0) (END (LENGTH INTEGER))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid unsigned integer.
+
+&lt;numeric&gt;</pre> </article> </li><li> <a name="RATIFY:TEST-URI"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-URI">TEST-URI</a></code></h4> <code class="qualifiers"></code> <code class="arguments">URI &amp;OPTIONAL (START 0) (END (LENGTH URI))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid URI according to http://tools.ietf.org/html/rfc3986
+
+&lt;scheme&gt;:&lt;hierarchical-part&gt;(?&lt;query&gt;)?(#&lt;fragment&gt;)?</pre> </article> </li><li> <a name="RATIFY:TEST-URL"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-URL">TEST-URL</a></code></h4> <code class="qualifiers"></code> <code class="arguments">URL &amp;OPTIONAL (START 0) (END (LENGTH URL))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid URL.
+
+ (&lt;protocol&gt;://)?(&lt;domain&gt;)?&lt;absolute-path&gt;(?&lt;query&gt;)?(#&lt;fragment&gt;)?</pre> </article> </li><li> <a name="RATIFY:TEST-USER"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-USER">TEST-USER</a></code></h4> <code class="qualifiers"></code> <code class="arguments">USER &amp;OPTIONAL (START 0) (END (LENGTH USER))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid user.
+
+[a-zA-Z0-9%!$&amp;'()*+,;=-._~:]+</pre> </article> </li><li> <a name="RATIFY:TEST-YEAR"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEST-YEAR">TEST-YEAR</a></code></h4> <code class="qualifiers"></code> <code class="arguments">YEAR &amp;OPTIONAL (START 0) (END (LENGTH YEAR))</code><code>)</code>  </header> <pre class="docstring">Tests for a valid year. 
+
+[0-9]{4}</pre> </article> </li><li> <a name="RATIFY:TEXT-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEXT-P">TEXT-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TEXT &amp;OPTIONAL (START 0) (END (LENGTH TEXT))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-TEXT, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:TEXTAREA-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TEXTAREA-P">TEXTAREA-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TEXT &amp;OPTIONAL (START 0) (END (LENGTH TEXT))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-TEXTAREA, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:TIME-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TIME-P">TIME-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">TIME &amp;OPTIONAL (START 0) (END (LENGTH TIME))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-TIME, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:TRUE-ALPHA-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TRUE-ALPHA-P">TRUE-ALPHA-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">CHAR</code><code>)</code>  </header> <pre class="docstring">Returns T if the character is one of a-Z.
+
+ALPHA-CHAR-P as per CLHS is not strictly limited to just a-Z and returns T
+for undesired characters like ü on some implementations like SBCL.</pre> </article> </li><li> <a name="RATIFY:TRUE-ALPHANUMERIC-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:TRUE-ALPHANUMERIC-P">TRUE-ALPHANUMERIC-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">CHAR</code><code>)</code>  </header> <pre class="docstring">Returns T if the character is one of a-Z 0-9.
+
+ALPHANUMERICP as per CLHS is not strictly limited to just a-Z 0-9 and returns T
+for undesired characters like ü on some implementations like SBCL.</pre> </article> </li><li> <a name="RATIFY:UNSIGNED-INTEGER-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:UNSIGNED-INTEGER-P">UNSIGNED-INTEGER-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">INTEGER &amp;OPTIONAL (START 0) (END (LENGTH INTEGER))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-UNSIGNED-INTEGER, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:URI-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:URI-P">URI-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">URI &amp;OPTIONAL (START 0) (END (LENGTH URI))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-URI, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:URL-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:URL-P">URL-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">URL &amp;OPTIONAL (START 0) (END (LENGTH URL))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-URL, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:USER-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:USER-P">USER-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">USER &amp;OPTIONAL (START 0) (END (LENGTH USER))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-USER, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:YEAR-P"> </a> <article> <header class="function"> <span class="type">function</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:YEAR-P">YEAR-P</a></code></h4> <code class="qualifiers"></code> <code class="arguments">YEAR &amp;OPTIONAL (START 0) (END (LENGTH YEAR))</code><code>)</code>  </header> <pre class="docstring">Predicate version of TEST-YEAR, returns the passed value on success, NIL on error.</pre> </article> </li><li> <a name="RATIFY:DEFINE-PARSER"> </a> <article> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:DEFINE-PARSER">DEFINE-PARSER</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;REST ARGS</code><code>)</code>  </header> <pre class="docstring">Defines a new parse function with NAME.
+PARAM will be bound to the object to parse, which is a string unless otherwise
+specified, START to the starting index (inc) and END to the ending index (exc).
+
+This function creates two other functions automatically:
+PARSE-name This is the main test function. If the test fails, an error of
+          type RATIFICATION-ERROR should be returned. If the test succeeds
+          the argument passed to it is always returned.</pre> </article> </li><li> <a name="RATIFY:DEFINE-TEST"> </a> <article> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:DEFINE-TEST">DEFINE-TEST</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;REST ARGS</code><code>)</code>  </header> <pre class="docstring">Defines a new test function with NAME.
+PARAM will be bound to the object to test, which is a string unless otherwise
+specified, START to the starting index (inc) and END to the ending index (exc).
 
 This function creates two other functions automatically:
 TEST-name This is the main test function. If the test fails, an error of
           type RATIFICATION-ERROR should be returned. If the test succeeds
           the argument passed to it is always returned.
 name-P    Equivalent to the TEST- function, except that it simply returns
-          NIL on failure instead of signalling an error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TESTING:PERFORM-COMBINED-TESTS"/>
-                <article>
-                  <header>
-                    <span>MACRO</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:PERFORM-COMBINED-TESTS">PERFORM-COMBINED-TESTS</a></h4>
-                      <span></span>
-                      <span>(&amp;BODY TEST-FORMS)</span>
-                    </code>
-                  </header>
-                  <pre>Same as PERFORM-TESTS, except with WITH-ERRORS-COMBINED in effect.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TESTING:PERFORM-TESTS"/>
-                <article>
-                  <header>
-                    <span>MACRO</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:PERFORM-TESTS">PERFORM-TESTS</a></h4>
-                      <span></span>
-                      <span>(&amp;BODY TEST-FORMS)</span>
-                    </code>
-                  </header>
-                  <pre>Performs a series of tests.
+          NIL on failure instead of signalling an error.</pre> </article> </li><li> <a name="RATIFY:PERFORM-COMBINED-TESTS"> </a> <article> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PERFORM-COMBINED-TESTS">PERFORM-COMBINED-TESTS</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;REST ARGS</code><code>)</code>  </header> <pre class="docstring">Same as PERFORM-TESTS, except with WITH-ERRORS-COMBINED in effect.</pre> </article> </li><li> <a name="RATIFY:PERFORM-TESTS"> </a> <article> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:PERFORM-TESTS">PERFORM-TESTS</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;REST ARGS</code><code>)</code>  </header> <pre class="docstring">Performs a series of tests.
 
 TEST-FORMS ::= TEST-FORM*
 TEST-FORM  ::= (test-name test-object*)
-See TEST.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TESTING:WITH-ERRORS-COMBINED"/>
-                <article>
-                  <header>
-                    <span>MACRO</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:WITH-ERRORS-COMBINED">WITH-ERRORS-COMBINED</a></h4>
-                      <span></span>
-                      <span>(&amp;BODY BODY)</span>
-                    </code>
-                  </header>
-                  <pre>Executes the body with special error handling.
+See TEST.</pre> </article> </li><li> <a name="RATIFY:WITH-ERRORS-COMBINED"> </a> <article> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:WITH-ERRORS-COMBINED">WITH-ERRORS-COMBINED</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;REST ARGS</code><code>)</code>  </header> <pre class="docstring">Executes the body with special error handling.
 Errors are gathered in a COMBINED-ERROR, which is finally signalled once
 the body finishes or an error occurs and no SKIP-ERROR restart can be found.
 
 If no errors occur within the body, the last value of the body is returned
-as per PROGN.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TESTING:WITH-SKIPPING"/>
-                <article>
-                  <header>
-                    <span>MACRO</span>
-                    <code>
-                      <h4><a href="#RATIFY-TESTING:WITH-SKIPPING">WITH-SKIPPING</a></h4>
-                      <span></span>
-                      <span>(&amp;BODY BODY)</span>
-                    </code>
-                  </header>
-                  <pre>Marks the body as being skippable if an error occurs within.
-This establishes the restart SKIP-ERROR.</pre>
-                </article>
-              </li></ul></li><li class="package">
-            <h3>
-              <a name="RATIFY-PARSING" href="#RATIFY-PARSING">RATIFY-PARSING</a>
-              <span class="nicknames">(ORG.TYMOONNEXT.RATIFY.PARSING)</span>
-            </h3>
-            <ul><li>
-                <a name="RATIFY-PARSING:PARSE"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-PARSING:PARSE">PARSE</a></h4>
-                      <span></span>
-                      <span>(PARSER-NAME OBJECT)</span>
-                    </code>
-                  </header>
-                  <pre>Attempts to parse OBJECT using the parser named by PARSER-NAME.
-
-Automatically establishes a SKIP-ERROR restart as per WITH-SKIPPING.
-Performs exactly two operations:
-1) Call the test function of name PARSER-NAME on the object
-2) Call the parse function of name PARSER-NAME on the object</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-PARSING:PARSER"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-PARSING:PARSER">PARSER</a></h4>
-                      <span></span>
-                      <span>(NAME)</span>
-                    </code>
-                  </header>
-                  <pre>Returns the function associated with the NAME.
-If no such parser can be found, #'IDENTITY is returned.
-The name is converted to a keyword.
-
-SETF-able.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-PARSING:DEFINE-PARSER"/>
-                <article>
-                  <header>
-                    <span>MACRO</span>
-                    <code>
-                      <h4><a href="#RATIFY-PARSING:DEFINE-PARSER">DEFINE-PARSER</a></h4>
-                      <span></span>
-                      <span>(NAME (PARAM) &amp;BODY BODY)</span>
-                    </code>
-                  </header>
-                  <pre>Defines a new parse function with NAME.
-PARAM will be bound to the object to parse, which is a string unless otherwise
-specified.
-
-This function creates two other functions automatically:
-PARSE-name This is the main test function. If the test fails, an error of
-          type RATIFICATION-ERROR should be returned. If the test succeeds
-          the argument passed to it is always returned.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-PARSING:WITH-PARSED-FORMS"/>
-                <article>
-                  <header>
-                    <span>MACRO</span>
-                    <code>
-                      <h4><a href="#RATIFY-PARSING:WITH-PARSED-FORMS">WITH-PARSED-FORMS</a></h4>
-                      <span></span>
-                      <span>(PARSE-FORMS &amp;BODY BODY)</span>
-                    </code>
-                  </header>
-                  <pre>Performs a series of parsing operations on objects and rebinds their symbols to the results.
+as per PROGN.</pre> </article> </li><li> <a name="RATIFY:WITH-PARSED-FORMS"> </a> <article> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:WITH-PARSED-FORMS">WITH-PARSED-FORMS</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;REST ARGS</code><code>)</code>  </header> <pre class="docstring">Performs a series of parsing operations on objects and rebinds their symbols to the results.
 
 PARSE-FORMS ::= PARSE-FORM*
 PARSE-FORM  ::= (parser-name object*)
@@ -453,1561 +251,5 @@ See PARSE.
 The parse operations are performed within WITH-ERRORS-COMBINED.
 As such all parse operations are always performed and only one or no
 conditions are signalled as part of the parsing.
-See WITH-ERRORS-COMBINED.</pre>
-                </article>
-              </li></ul></li><li class="package">
-            <h3>
-              <a name="RATIFY-EMAIL" href="#RATIFY-EMAIL">RATIFY-EMAIL</a>
-              <span class="nicknames">(ORG.TYMOONNEXT.RATIFY.EMAIL)</span>
-            </h3>
-            <ul><li>
-                <a name="RATIFY-EMAIL:EMAIL-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-EMAIL:EMAIL-P">EMAIL-P</a></h4>
-                      <span></span>
-                      <span>(EMAIL)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-EMAIL, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-EMAIL:TEST-EMAIL"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-EMAIL:TEST-EMAIL">TEST-EMAIL</a></h4>
-                      <span></span>
-                      <span>(EMAIL)</span>
-                    </code>
-                  </header>
-                  <pre>Test an e-mail address for validity according to http://en.wikipedia.org/wiki/Email_address#Syntax
-
-&lt;local-part&gt;@&lt;domain&gt;</pre>
-                </article>
-              </li></ul></li><li class="package">
-            <h3>
-              <a name="RATIFY-URI" href="#RATIFY-URI">RATIFY-URI</a>
-              <span class="nicknames">(ORG.TYMOONNEXT.RATIFY.URI)</span>
-            </h3>
-            <ul><li>
-                <a name="RATIFY-URI:ABSOLUTE-PATH-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:ABSOLUTE-PATH-P">ABSOLUTE-PATH-P</a></h4>
-                      <span></span>
-                      <span>(PATH)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-ABSOLUTE-PATH, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:AUTHORITY-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:AUTHORITY-P">AUTHORITY-P</a></h4>
-                      <span></span>
-                      <span>(AUTHORITY)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-AUTHORITY, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:FRAGMENT-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:FRAGMENT-P">FRAGMENT-P</a></h4>
-                      <span></span>
-                      <span>(FRAGMENT)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-FRAGMENT, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:HIERARCHICAL-PART-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:HIERARCHICAL-PART-P">HIERARCHICAL-PART-P</a></h4>
-                      <span></span>
-                      <span>(HIERARCHICAL)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-HIERARCHICAL-PART, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:HOST-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:HOST-P">HOST-P</a></h4>
-                      <span></span>
-                      <span>(HOST)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-HOST, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:IP-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:IP-P">IP-P</a></h4>
-                      <span></span>
-                      <span>(IP)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-IP, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:IPV4-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:IPV4-P">IPV4-P</a></h4>
-                      <span></span>
-                      <span>(IP)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-IPV4, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:IPV6-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:IPV6-P">IPV6-P</a></h4>
-                      <span></span>
-                      <span>(IP)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-IPV6, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:PORT-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:PORT-P">PORT-P</a></h4>
-                      <span></span>
-                      <span>(PORT)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-PORT, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:QUERY-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:QUERY-P">QUERY-P</a></h4>
-                      <span></span>
-                      <span>(QUERY)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-QUERY, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:ROOTLESS-PATH-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:ROOTLESS-PATH-P">ROOTLESS-PATH-P</a></h4>
-                      <span></span>
-                      <span>(PATH)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-ROOTLESS-PATH, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:SCHEME-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:SCHEME-P">SCHEME-P</a></h4>
-                      <span></span>
-                      <span>(SCHEME)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-SCHEME, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-ABSOLUTE-PATH"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-ABSOLUTE-PATH">TEST-ABSOLUTE-PATH</a></h4>
-                      <span></span>
-                      <span>(PATH)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid absolute path.
-
-/&lt;rootless-path&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-AUTHORITY"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-AUTHORITY">TEST-AUTHORITY</a></h4>
-                      <span></span>
-                      <span>(AUTHORITY)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid authority.
-
-(&lt;user&gt;@)?&lt;authority&gt;(:&lt;port&gt;)?</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-FRAGMENT"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-FRAGMENT">TEST-FRAGMENT</a></h4>
-                      <span></span>
-                      <span>(FRAGMENT)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid fragment part.
-
-[a-zA-Z0-9!$&amp;'()*+,;=-._~:@?/]+</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-HIERARCHICAL-PART"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-HIERARCHICAL-PART">TEST-HIERARCHICAL-PART</a></h4>
-                      <span></span>
-                      <span>(HIERARCHICAL)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid hierarchical part.
-
-&lt;absolute-path&gt;|//&lt;authority&gt;&lt;absolute-path&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-HOST"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-HOST">TEST-HOST</a></h4>
-                      <span></span>
-                      <span>(HOST)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid host name.
-
-[&lt;ip&gt;]|[a-zA-Z0-9-._~%!$&amp;'()*+,;=]+</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-IP"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-IP">TEST-IP</a></h4>
-                      <span></span>
-                      <span>(IP)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid IP address.
-
-&lt;ipv6&gt;|&lt;ipv4&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-IPV4"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-IPV4">TEST-IPV4</a></h4>
-                      <span></span>
-                      <span>(IP)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid IPv4
-
-&lt;unsigned-integer&gt;\.&lt;unsigned-integer&gt;\.&lt;unsigned-integer&gt;\.&lt;unsigned-integer&gt;
-0&lt;=unsigned-integer&lt;=255</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-IPV6"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-IPV6">TEST-IPV6</a></h4>
-                      <span></span>
-                      <span>(IP)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid IPv6
-
-[0-9A-F]:(:|[0-9A-F]:){1,6})[0-9A-F]?
-0000&lt;=val&lt;=FFFF</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-PORT"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-PORT">TEST-PORT</a></h4>
-                      <span></span>
-                      <span>(PORT)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid port.
-
-&lt;unsigned-integer&gt;
-0&lt;=val&lt;=65535</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-QUERY"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-QUERY">TEST-QUERY</a></h4>
-                      <span></span>
-                      <span>(QUERY)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid query part.
-
-[a-zA-Z0-9!$&amp;'()*+,;=-._~:@?/]+</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-ROOTLESS-PATH"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-ROOTLESS-PATH">TEST-ROOTLESS-PATH</a></h4>
-                      <span></span>
-                      <span>(PATH)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid rootless path.
-
-[a-zA-Z0-9!$&amp;'()*+,;=-._~:@]+</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-SCHEME"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-SCHEME">TEST-SCHEME</a></h4>
-                      <span></span>
-                      <span>(SCHEME)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid scheme.
-
-[a-zA-Z][a-zA-Z0-9-.+]*</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-URI"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-URI">TEST-URI</a></h4>
-                      <span></span>
-                      <span>(URI)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid URI according to http://tools.ietf.org/html/rfc3986
-
-&lt;scheme&gt;:&lt;hierarchical-part&gt;(?&lt;query&gt;)?(#&lt;fragment&gt;)?</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:TEST-USER"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:TEST-USER">TEST-USER</a></h4>
-                      <span></span>
-                      <span>(USER)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid user.
-
-[a-zA-Z0-9%!$&amp;'()*+,;=-._~:]+</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:URI-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:URI-P">URI-P</a></h4>
-                      <span></span>
-                      <span>(URI)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-URI, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URI:USER-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URI:USER-P">USER-P</a></h4>
-                      <span></span>
-                      <span>(USER)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-USER, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li></ul></li><li class="package">
-            <h3>
-              <a name="RATIFY-URL" href="#RATIFY-URL">RATIFY-URL</a>
-              <span class="nicknames">(ORG.TYMOONNEXT.RATIFY.URL)</span>
-            </h3>
-            <ul><li>
-                <a name="RATIFY-URL:DOMAIN-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URL:DOMAIN-P">DOMAIN-P</a></h4>
-                      <span></span>
-                      <span>(DOMAIN)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-DOMAIN, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URL:HOSTNAME-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URL:HOSTNAME-P">HOSTNAME-P</a></h4>
-                      <span></span>
-                      <span>(HOSTNAME)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-HOSTNAME, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URL:PROTOCOL-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URL:PROTOCOL-P">PROTOCOL-P</a></h4>
-                      <span></span>
-                      <span>(PROTOCOL)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-PROTOCOL, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URL:TEST-DOMAIN"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URL:TEST-DOMAIN">TEST-DOMAIN</a></h4>
-                      <span></span>
-                      <span>(DOMAIN)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid domain.
-
-[&lt;ip&gt;]|&lt;hostname&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URL:TEST-HOSTNAME"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URL:TEST-HOSTNAME">TEST-HOSTNAME</a></h4>
-                      <span></span>
-                      <span>(HOSTNAME)</span>
-                    </code>
-                  </header>
-                  <pre>Test a hostname for validity according to http://en.wikipedia.org/wiki/Hostname
-
-[a-zA-Z0-9-]{1,63}(\.[a-zA-Z0-9-]{1,63})*
-1&lt;=length&lt;=255</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URL:TEST-PROTOCOL"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URL:TEST-PROTOCOL">TEST-PROTOCOL</a></h4>
-                      <span></span>
-                      <span>(PROTOCOL)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid protocol according to *PERMITTED-PROTOCOLS*</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URL:TEST-URL"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URL:TEST-URL">TEST-URL</a></h4>
-                      <span></span>
-                      <span>(URL)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid URL.
-
- (&lt;protocol&gt;://)?(&lt;domain&gt;)?&lt;absolute-path&gt;(?&lt;query&gt;)?(#&lt;fragment&gt;)?</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URL:URL-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-URL:URL-P">URL-P</a></h4>
-                      <span></span>
-                      <span>(URL)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-URL, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-URL:*PERMITTED-PROTOCOLS*"/>
-                <article>
-                  <header>
-                    <span>SPECIAL</span>
-                    <code>
-                      <h4><a href="#RATIFY-URL:*PERMITTED-PROTOCOLS*">*PERMITTED-PROTOCOLS*</a></h4>
-                      <span></span>
-                      <span></span>
-                    </code>
-                  </header>
-                  <pre>List of permitted protocols in a URL.</pre>
-                </article>
-              </li></ul></li><li class="package">
-            <h3>
-              <a name="RATIFY-DATE" href="#RATIFY-DATE">RATIFY-DATE</a>
-              <span class="nicknames">(RATIFY-TIME ORG.TYMOONNEXT.RATIFY.TIME ORG.TYMOONNEXT.RATIFY.DATE)</span>
-            </h3>
-            <ul><li>
-                <a name="RATIFY-DATE:DATE-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:DATE-P">DATE-P</a></h4>
-                      <span></span>
-                      <span>(DATE)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-DATE, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:DATETIME-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:DATETIME-P">DATETIME-P</a></h4>
-                      <span></span>
-                      <span>(DATETIME)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-DATETIME, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:DAY-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:DAY-P">DAY-P</a></h4>
-                      <span></span>
-                      <span>(DAY)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-DAY, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:HOUR-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:HOUR-P">HOUR-P</a></h4>
-                      <span></span>
-                      <span>(HOUR)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-HOUR, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:MINUTE-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:MINUTE-P">MINUTE-P</a></h4>
-                      <span></span>
-                      <span>(MINUTE)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-MINUTE, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:MONTH-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:MONTH-P">MONTH-P</a></h4>
-                      <span></span>
-                      <span>(MONTH)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-MONTH, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:OFFSET-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:OFFSET-P">OFFSET-P</a></h4>
-                      <span></span>
-                      <span>(OFFSET)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-OFFSET, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:PARSE-DATE"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:PARSE-DATE">PARSE-DATE</a></h4>
-                      <span></span>
-                      <span>(DATE)</span>
-                    </code>
-                  </header>
-                  <pre>Parses the given date into a LOCAL-TIME:TIMESTAMP object.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:PARSE-DATETIME"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:PARSE-DATETIME">PARSE-DATETIME</a></h4>
-                      <span></span>
-                      <span>(DATETIME)</span>
-                    </code>
-                  </header>
-                  <pre>Parses the given datetime into a LOCAL-TIME:TIMESTAMP object.
-The only part that is allowed to be omitted is the timezone offset specification.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:PARSE-DAY"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:PARSE-DAY">PARSE-DAY</a></h4>
-                      <span></span>
-                      <span>(DAY)</span>
-                    </code>
-                  </header>
-                  <pre>Parses the day into an integer</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:PARSE-HOUR"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:PARSE-HOUR">PARSE-HOUR</a></h4>
-                      <span></span>
-                      <span>(HOUR)</span>
-                    </code>
-                  </header>
-                  <pre>Parses the hour into an integer</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:PARSE-MINUTE"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:PARSE-MINUTE">PARSE-MINUTE</a></h4>
-                      <span></span>
-                      <span>(MINUTE)</span>
-                    </code>
-                  </header>
-                  <pre>Parses the minute into an integer</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:PARSE-MONTH"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:PARSE-MONTH">PARSE-MONTH</a></h4>
-                      <span></span>
-                      <span>(MONTH)</span>
-                    </code>
-                  </header>
-                  <pre>Parses the month into an integer.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:PARSE-OFFSET"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:PARSE-OFFSET">PARSE-OFFSET</a></h4>
-                      <span></span>
-                      <span>(OFFSET)</span>
-                    </code>
-                  </header>
-                  <pre>Parses the offset into a list of (DIR HOUR MINUTE), wherein DIR is 
-a string of either &quot;+&quot; or &quot;-&quot;, denoting the direction of the offset. </pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:PARSE-SECOND"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:PARSE-SECOND">PARSE-SECOND</a></h4>
-                      <span></span>
-                      <span>(SECOND)</span>
-                    </code>
-                  </header>
-                  <pre>Parses the second into an integer</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:PARSE-TIME"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:PARSE-TIME">PARSE-TIME</a></h4>
-                      <span></span>
-                      <span>(TIME)</span>
-                    </code>
-                  </header>
-                  <pre>Parses the given time into a LOCAL-TIME:TIMESTAMP object.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:PARSE-YEAR"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:PARSE-YEAR">PARSE-YEAR</a></h4>
-                      <span></span>
-                      <span>(YEAR)</span>
-                    </code>
-                  </header>
-                  <pre>Parses the year into an integer.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:SECOND-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:SECOND-P">SECOND-P</a></h4>
-                      <span></span>
-                      <span>(SECOND)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-SECOND, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:TEST-DATE"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:TEST-DATE">TEST-DATE</a></h4>
-                      <span></span>
-                      <span>(DATE)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid date.
-
-&lt;year&gt;-&lt;month&gt;-&lt;day&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:TEST-DATETIME"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:TEST-DATETIME">TEST-DATETIME</a></h4>
-                      <span></span>
-                      <span>(DATETIME)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid datetime.
-
-&lt;year&gt;-&lt;month&gt;-&lt;day&gt;T&lt;hour&gt;:&lt;minute&gt;:&lt;second&gt;Z&lt;offset&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:TEST-DAY"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:TEST-DAY">TEST-DAY</a></h4>
-                      <span></span>
-                      <span>(DAY)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid day.
-
-[0-9]{1,2}
-1&lt;=val&lt;=31</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:TEST-HOUR"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:TEST-HOUR">TEST-HOUR</a></h4>
-                      <span></span>
-                      <span>(HOUR)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid hour.
-
-[0-9]{1,2}
-0&lt;=val&lt;=23</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:TEST-MINUTE"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:TEST-MINUTE">TEST-MINUTE</a></h4>
-                      <span></span>
-                      <span>(MINUTE)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid minute.
-
-[0-9]{1,2}
-0&lt;=val&lt;=59</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:TEST-MONTH"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:TEST-MONTH">TEST-MONTH</a></h4>
-                      <span></span>
-                      <span>(MONTH)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid month.
-
-[0-9]{1,2}
-1&lt;=val&lt;=12</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:TEST-OFFSET"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:TEST-OFFSET">TEST-OFFSET</a></h4>
-                      <span></span>
-                      <span>(OFFSET)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid offset.
-
-[-+]hour:minute</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:TEST-SECOND"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:TEST-SECOND">TEST-SECOND</a></h4>
-                      <span></span>
-                      <span>(SECOND)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid second.
-
-[0-9]{1,2}
-0&lt;=val&lt;=59</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:TEST-TIME"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:TEST-TIME">TEST-TIME</a></h4>
-                      <span></span>
-                      <span>(TIME)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid time.
-
-&lt;hour&gt;:&lt;minute&gt;:&lt;second&gt;Z&lt;offset&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:TEST-YEAR"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:TEST-YEAR">TEST-YEAR</a></h4>
-                      <span></span>
-                      <span>(YEAR)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid year. 
-
-[0-9]{4}</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:TIME-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:TIME-P">TIME-P</a></h4>
-                      <span></span>
-                      <span>(TIME)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-TIME, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-DATE:YEAR-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-DATE:YEAR-P">YEAR-P</a></h4>
-                      <span></span>
-                      <span>(YEAR)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-YEAR, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li></ul></li><li class="package">
-            <h3>
-              <a name="RATIFY-TYPES" href="#RATIFY-TYPES">RATIFY-TYPES</a>
-              <span class="nicknames">(ORG.TYMOONNEXT.RATIFY.TYPES)</span>
-            </h3>
-            <ul><li>
-                <a name="RATIFY-TYPES:ALPHABETIC-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:ALPHABETIC-P">ALPHABETIC-P</a></h4>
-                      <span></span>
-                      <span>(ALPHA)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-ALPHABETIC, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:ALPHANUMERIC-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:ALPHANUMERIC-P">ALPHANUMERIC-P</a></h4>
-                      <span></span>
-                      <span>(ALPHA)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-ALPHANUMERIC, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:BIT-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:BIT-P">BIT-P</a></h4>
-                      <span></span>
-                      <span>(BIT)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-BIT, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:BOOLEAN-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:BOOLEAN-P">BOOLEAN-P</a></h4>
-                      <span></span>
-                      <span>(BOOLEAN)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-BOOLEAN, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:CHARACTER-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:CHARACTER-P">CHARACTER-P</a></h4>
-                      <span></span>
-                      <span>(CHARACTER)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-CHARACTER, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:COMPLEX-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:COMPLEX-P">COMPLEX-P</a></h4>
-                      <span></span>
-                      <span>(COMPLEX)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-COMPLEX, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:FLOAT-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:FLOAT-P">FLOAT-P</a></h4>
-                      <span></span>
-                      <span>(FLOAT)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-FLOAT, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:INTEGER-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:INTEGER-P">INTEGER-P</a></h4>
-                      <span></span>
-                      <span>(INTEGER)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-INTEGER, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:NUMBER-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:NUMBER-P">NUMBER-P</a></h4>
-                      <span></span>
-                      <span>(NUMBER)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-NUMBER, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:NUMERIC-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:NUMERIC-P">NUMERIC-P</a></h4>
-                      <span></span>
-                      <span>(NUMBER)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-NUMERIC, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:PARSE-BIT"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:PARSE-BIT">PARSE-BIT</a></h4>
-                      <span></span>
-                      <span>(BIT)</span>
-                    </code>
-                  </header>
-                  <pre>Parses into a bit of either 1 or 0.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:PARSE-BOOLEAN"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:PARSE-BOOLEAN">PARSE-BOOLEAN</a></h4>
-                      <span></span>
-                      <span>(BOOLEAN)</span>
-                    </code>
-                  </header>
-                  <pre>Parses into a boolean.
-
-Returns T if one of (&quot;1&quot; &quot;true&quot; &quot;T&quot;), NIL otherwise.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:PARSE-CHARACTER"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:PARSE-CHARACTER">PARSE-CHARACTER</a></h4>
-                      <span></span>
-                      <span>(CHARACTER)</span>
-                    </code>
-                  </header>
-                  <pre>Parses into a character.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:PARSE-COMPLEX"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:PARSE-COMPLEX">PARSE-COMPLEX</a></h4>
-                      <span></span>
-                      <span>(COMPLEX)</span>
-                    </code>
-                  </header>
-                  <pre>Parses into a complex number.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:PARSE-FLOAT"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:PARSE-FLOAT">PARSE-FLOAT</a></h4>
-                      <span></span>
-                      <span>(FLOAT)</span>
-                    </code>
-                  </header>
-                  <pre>Parses into a float.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:PARSE-NUMBER"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:PARSE-NUMBER">PARSE-NUMBER</a></h4>
-                      <span></span>
-                      <span>(NUMBER)</span>
-                    </code>
-                  </header>
-                  <pre>Parses into a number.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:PARSE-RATIO"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:PARSE-RATIO">PARSE-RATIO</a></h4>
-                      <span></span>
-                      <span>(RATIO)</span>
-                    </code>
-                  </header>
-                  <pre>Parses into a ratio.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:PARSE-RATIONAL"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:PARSE-RATIONAL">PARSE-RATIONAL</a></h4>
-                      <span></span>
-                      <span>(RATIONAL)</span>
-                    </code>
-                  </header>
-                  <pre>Parses into a rational.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:PARSE-REAL"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:PARSE-REAL">PARSE-REAL</a></h4>
-                      <span></span>
-                      <span>(REAL)</span>
-                    </code>
-                  </header>
-                  <pre>Parses into a real.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:PARSE-STRING"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:PARSE-STRING">PARSE-STRING</a></h4>
-                      <span></span>
-                      <span>(STRING)</span>
-                    </code>
-                  </header>
-                  <pre>Parses into a string (simply returns its argument).</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:PARSE-UNSIGNED-INTEGER"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:PARSE-UNSIGNED-INTEGER">PARSE-UNSIGNED-INTEGER</a></h4>
-                      <span></span>
-                      <span>(INTEGER)</span>
-                    </code>
-                  </header>
-                  <pre>Parses into an integer.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:RATIO-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:RATIO-P">RATIO-P</a></h4>
-                      <span></span>
-                      <span>(RATIO)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-RATIO, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:RATIONAL-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:RATIONAL-P">RATIONAL-P</a></h4>
-                      <span></span>
-                      <span>(RATIONAL)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-RATIONAL, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:REAL-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:REAL-P">REAL-P</a></h4>
-                      <span></span>
-                      <span>(REAL)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-REAL, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:STRING-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:STRING-P">STRING-P</a></h4>
-                      <span></span>
-                      <span>(STRING)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-STRING, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-ALPHABETIC"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-ALPHABETIC">TEST-ALPHABETIC</a></h4>
-                      <span></span>
-                      <span>(ALPHA)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for an alphabetic string.
-
-[a-zA-Z]*</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-ALPHANUMERIC"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-ALPHANUMERIC">TEST-ALPHANUMERIC</a></h4>
-                      <span></span>
-                      <span>(ALPHA)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for an alphanumeric string.
-
-[a-zA-Z0-9]*</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-BIT"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-BIT">TEST-BIT</a></h4>
-                      <span></span>
-                      <span>(BIT)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid bit.
-
-[01]</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-BOOLEAN"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-BOOLEAN">TEST-BOOLEAN</a></h4>
-                      <span></span>
-                      <span>(BOOLEAN)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid boolean.
-
-1|0|true|false|T|NIL
-case-insensitive</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-CHARACTER"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-CHARACTER">TEST-CHARACTER</a></h4>
-                      <span></span>
-                      <span>(CHARACTER)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid character.
-
-.{1}</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-COMPLEX"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-COMPLEX">TEST-COMPLEX</a></h4>
-                      <span></span>
-                      <span>(COMPLEX)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid complex number.
-
-&lt;real&gt;[cC]&lt;real&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-FLOAT"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-FLOAT">TEST-FLOAT</a></h4>
-                      <span></span>
-                      <span>(FLOAT)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid float.
-
-[+-]?&lt;unsigned-integer&gt;(\.&lt;unsigned-integer&gt;)?(e&lt;unsigned-integer&gt;)?</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-INTEGER"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-INTEGER">TEST-INTEGER</a></h4>
-                      <span></span>
-                      <span>(INTEGER)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid signed integer.
-
-[+-]?&lt;unsigned-integer&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-NUMBER"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-NUMBER">TEST-NUMBER</a></h4>
-                      <span></span>
-                      <span>(NUMBER)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid number.
-
-&lt;real&gt;|&lt;complex&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-NUMERIC"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-NUMERIC">TEST-NUMERIC</a></h4>
-                      <span></span>
-                      <span>(NUMBER)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a numeric string.
-
-[0-9]*</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-RATIO"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-RATIO">TEST-RATIO</a></h4>
-                      <span></span>
-                      <span>(RATIO)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid ratio.
-
-[+-]?&lt;unsigned-integer&gt;/&lt;unsigned-integer&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-RATIONAL"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-RATIONAL">TEST-RATIONAL</a></h4>
-                      <span></span>
-                      <span>(RATIONAL)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid rational.
-
-[+-]?&lt;unsigned-integer&gt;(/&lt;unsigned-integer&gt;)?</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-REAL"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-REAL">TEST-REAL</a></h4>
-                      <span></span>
-                      <span>(REAL)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid real.
-
-&lt;rational&gt;|&lt;float&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-STRING"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-STRING">TEST-STRING</a></h4>
-                      <span></span>
-                      <span>(STRING)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid string.
-
-.+</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:TEST-UNSIGNED-INTEGER"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:TEST-UNSIGNED-INTEGER">TEST-UNSIGNED-INTEGER</a></h4>
-                      <span></span>
-                      <span>(INTEGER)</span>
-                    </code>
-                  </header>
-                  <pre>Tests for a valid unsigned integer.
-
-&lt;numeric&gt;</pre>
-                </article>
-              </li><li>
-                <a name="RATIFY-TYPES:UNSIGNED-INTEGER-P"/>
-                <article>
-                  <header>
-                    <span>FUNCTION</span>
-                    <code>
-                      <h4><a href="#RATIFY-TYPES:UNSIGNED-INTEGER-P">UNSIGNED-INTEGER-P</a></h4>
-                      <span></span>
-                      <span>(INTEGER)</span>
-                    </code>
-                  </header>
-                  <pre>Predicate version of TEST-UNSIGNED-INTEGER, returns the passed value on success, NIL on error.</pre>
-                </article>
-              </li></ul></li></ul></article></div></body></html>
+See WITH-ERRORS-COMBINED.</pre> </article> </li><li> <a name="RATIFY:WITH-SKIPPING"> </a> <article> <header class="macro"> <span class="type">macro</span>  <code>(</code><h4 class="name"><code><a href="#RATIFY:WITH-SKIPPING">WITH-SKIPPING</a></code></h4> <code class="qualifiers"></code> <code class="arguments">&amp;REST ARGS</code><code>)</code>  </header> <pre class="docstring">Marks the body as being skippable if an error occurs within.
+This establishes the restart SKIP-ERROR.</pre> </article> </li></ul> </li></ul> </article>  </main> </body> </html> 
