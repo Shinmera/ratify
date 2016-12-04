@@ -138,7 +138,9 @@
 
 1|0|true|false|T|NIL
 case-insensitive"
-  (unless (find boolean '("1" "0" "true" "false" "T" "NIL") :test (lambda (a b) (string-equal a b :start1 start :end1 end)))
+  (unless (or (eql boolean NIL)
+              (eql boolean T)
+              (find boolean '("1" "0" "true" "false" "T" "NIL") :test (lambda (a b) (string-equal a b :start1 start :end1 end))))
     (ratification-error boolean "A boolean must be one of 1 0 true false T NIL.")))
 
 (define-parser boolean (boolean start end)
