@@ -47,9 +47,13 @@
 
  (<protocol>://)?(<domain>)?<absolute-path>(\?<query>)?(#<fragment>)?"
   (or
-   (cl-ppcre:register-groups-bind (NIL protocol domain path NIL query NIL fragment) ("^(([^:]+):\\/\\/)?([^/]+)?(\\/[^\\?]*)(\\?([^#]*))?(#(.*))?$" url :start start :end end)
+   (cl-ppcre:register-groups-bind
+       (NIL protocol domain NIL port path NIL query NIL fragment)
+       ("^(([^:]+):\\/\\/)?([^/:]+)?(:(\\d+))?(\\/[^\\?]*)(\\?([^#]*))?(#(.*))?$"
+        url :start start :end end)
      (when protocol (test-protocol protocol))
      (when domain (test-domain domain))
+     (when port (test-port port))
      (when path (test-absolute-path path))
      (when query (test-query query))
      (when fragment (test-fragment fragment))
