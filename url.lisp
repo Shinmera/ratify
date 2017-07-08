@@ -53,7 +53,7 @@
         url :start start :end end)
      (when protocol (test-protocol protocol))
      (when domain (test-domain domain))
-     (when port (parse-integer port))
+     (when port (test-port port))
      (when path (test-absolute-path path))
      (when query (test-query query))
      (when fragment (test-fragment fragment))
