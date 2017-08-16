@@ -4,10 +4,6 @@
  Author: Nicolas Hafner <shinmera@tymoon.eu>
 |#
 
-(defpackage #:org.tymoonnext.ratify.asdf
-  (:use #:cl #:asdf))
-(in-package #:org.tymoonnext.ratify.asdf)
-
 (defsystem ratify
   :name "Ratify"
   :version "0.1.0"
