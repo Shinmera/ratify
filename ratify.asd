@@ -11,7 +11,9 @@
   :author "Nicolas Hafner <shinmera@tymoon.eu>"
   :maintainer "Nicolas Hafner <shinmera@tymoon.eu>"
   :description "A collection of utilities to ratify, validate and parse inputs."
-  :homepage "https://github.com/Shinmera/ratify"
+  :homepage "https://Shinmera.github.io/ratify/"
+  :bug-tracker "https://github.com/Shinmera/ratify/issues"
+  :source-control (:git "https://github.com/Shinmera/ratify.git")
   :serial T
   :components ((:file "package")
                (:file "toolkit")
