@@ -53,8 +53,9 @@ TEST-name This is the main test function. If the test fails, an error of
           the argument passed to it is always returned.
 name-P    Equivalent to the TEST- function, except that it simply returns
           NIL on failure instead of signalling an error."
-  (let ((func-name (intern (format NIL "TEST-~a" name)))
-        (pred-name (intern (format NIL "~a-P" name))))
+  (let* ((*print-case* (readtable-case *readtable*))
+         (func-name (intern (format NIL "~a-~a" 'test name)))
+         (pred-name (intern (format NIL "~a-~a" name 'p))))
     `(progn
        (setf (test ,(string name))
              (defun ,func-name (,param &optional (,start 0) (,end (length ,param)))

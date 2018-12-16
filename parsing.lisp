@@ -33,7 +33,8 @@ This function creates two other functions automatically:
 PARSE-name This is the main test function. If the test fails, an error of
           type RATIFICATION-ERROR should be returned. If the test succeeds
           the argument passed to it is always returned."
-  (let ((func-name (intern (format NIL "PARSE-~a" name))))
+  (let* ((*print-case* (readtable-case *readtable*))
+         (func-name (intern (format NIL "~a-~a" 'parse name))))
     `(setf
       (parser ,(string name))
       (defun ,func-name (,param &optional (,start 0) (,end (length ,param)))
