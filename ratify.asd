@@ -7,7 +7,7 @@
 (defsystem ratify
   :name "Ratify"
   :version "0.1.0"
-  :license "Artistic"
+  :license "zlib"
   :author "Nicolas Hafner <shinmera@tymoon.eu>"
   :maintainer "Nicolas Hafner <shinmera@tymoon.eu>"
   :description "A collection of utilities to ratify, validate and parse inputs."
