@@ -49,7 +49,7 @@
 
 (defpackage #:ratify-uri
   (:nicknames #:org.tymoonnext.ratify.uri)
-  (:use #:cl #:ratify-toolkit #:ratify-testing)
+  (:use #:cl #:ratify-toolkit #:ratify-testing #:ratify-parsing)
   (:export
    #:test-ipv4
    #:test-ipv6

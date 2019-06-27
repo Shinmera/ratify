@@ -125,6 +125,14 @@
     (unless (<= 0 num 65535)
       (ratification-error port "Port must be between 0 and 65535."))))
 
+(define-parser port (port start end)
+  (let ((num (ignore-errors (parse-integer port :start start :end end))))
+    (unless num
+      (ratification-error port "Port must be a decimal integer."))
+    (unless (<= 0 num 65535)
+      (ratification-error port "Port must be between 0 and 65535."))
+    num))
+
 (define-test authority (authority start end)
   "Tests for a valid authority.
 
