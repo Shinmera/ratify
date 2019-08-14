@@ -42,4 +42,6 @@
 <local-part>@<domain>"
   (let ((atpos (email-atpos email start end)))
     (test-local-part email 0 atpos)
+    (unless (< (1+ atpos) end)
+      (ratification-error email "No domain found."))
     (test-domain email (1+ atpos) end)))
