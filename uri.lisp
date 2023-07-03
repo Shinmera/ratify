@@ -1,9 +1,3 @@
-#|
- This file is a part of ratify
- (c) 2014 Shirakumo http://tymoon.eu (shinmera@tymoon.eu)
- Author: Nicolas Hafner <shinmera@tymoon.eu>
-|#
-
 (in-package #:org.tymoonnext.ratify.uri)
 
 ;; According to http://tools.ietf.org/html/rfc3986
