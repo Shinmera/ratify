@@ -5,9 +5,9 @@
   :author "Yukari Hafner <shinmera@tymoon.eu>"
   :maintainer "Yukari Hafner <shinmera@tymoon.eu>"
   :description "A collection of utilities to ratify, validate and parse inputs."
-  :homepage "https://Shinmera.github.io/ratify/"
-  :bug-tracker "https://github.com/Shinmera/ratify/issues"
-  :source-control (:git "https://github.com/Shinmera/ratify.git")
+  :homepage "https://shinmera.com/docs/ratify/"
+  :bug-tracker "https://shinmera.com/project/ratify/issues"
+  :source-control (:git "https://shinmera.com/project/ratify.git")
   :serial T
   :components ((:file "package")
                (:file "toolkit")
